@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Sumatra's Westkust Society</title>
+<script src="supabase-config.js"></script>
+<style>
+:root{
+  --navy:#16212b;--ink:#17212b;--muted:#5f6c78;
+  --paper:#f7f3ea;--card:#fffdf8;--line:#ddd4c5;--accent:#934226;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:Georgia,serif}
+header{background:var(--navy);color:#fff;padding:22px 6%;position:sticky;top:0;z-index:5}
+.brand{font-family:Arial,sans-serif;font-weight:800;letter-spacing:.4px}
+.brand small{display:block;font-weight:400;opacity:.75;margin-top:5px}
+nav{display:flex;gap:22px;flex-wrap:wrap;margin-top:15px;font-family:Arial,sans-serif}
+nav a{color:#fff;text-decoration:none;font-size:14px;font-weight:700}
+nav a:hover{text-decoration:underline}
+.hero{max-width:1200px;margin:auto;padding:70px 6% 45px}
+.hero h1{font-size:56px;line-height:1.05;margin:0 0 18px}
+.hero p{max-width:790px;font-size:20px;line-height:1.65;color:#4e5963;margin:0}
+.section{max-width:1200px;margin:auto;padding:20px 6% 55px}
+.section-title{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:20px}
+.section-title h2{font-size:32px;margin:0}
+.section-title a{font-family:Arial,sans-serif;color:var(--accent);font-size:14px;font-weight:700;text-decoration:none}
+.featured{display:grid;grid-template-columns:1.35fr .65fr;gap:22px}
+.feature-card,.article-card,.quick-card{
+  background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+}
+.feature-card img{width:100%;height:350px;object-fit:cover;display:block}
+.feature-body{padding:24px}
+.category{font-family:Arial,sans-serif;color:var(--accent);font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.4px}
+.feature-body h3{font-size:34px;line-height:1.15;margin:9px 0 12px}
+.feature-body h3 a,.article-card h3 a,.quick-card a{color:var(--ink);text-decoration:none}
+.feature-body p,.article-card p{color:var(--muted);line-height:1.6}
+.date{font-family:Arial,sans-serif;color:#71808c;font-size:12px}
+.side-list{display:grid;gap:16px}
+.article-card{display:grid;grid-template-columns:145px 1fr}
+.article-card img{width:145px;height:125px;object-fit:cover}
+.article-card .body{padding:15px}
+.article-card h3{font-size:20px;line-height:1.25;margin:6px 0}
+.article-card p{font-size:14px;margin:5px 0}
+.latest{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.latest .article-card{display:block}
+.latest .article-card img{width:100%;height:190px}
+.latest .article-card .body{padding:18px}
+.empty,.error{
+  background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px;
+  font-family:Arial,sans-serif;color:var(--muted)
+}
+.error{color:#9b1c1c;background:#fde8e7}
+.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.quick-card{padding:23px}
+.quick-card h3{font-size:21px;margin:0 0 8px}
+.quick-card p{font-family:Arial,sans-serif;color:var(--muted);font-size:14px;line-height:1.55;margin:0}
+footer{background:var(--navy);color:#dce2e7;padding:28px 6%;font-family:Arial,sans-serif;font-size:13px}
+@media(max-width:850px){
+  .featured{grid-template-columns:1fr}.latest{grid-template-columns:1fr 1fr}
+}
+@media(max-width:600px){
+  header{padding:17px 5%}nav{gap:13px}
+  .hero{padding-top:45px}.hero h1{font-size:40px}
+  .latest,.quick{grid-template-columns:1fr}
+  .article-card{grid-template-columns:120px 1fr}.article-card img{width:120px;height:120px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">SUMATRA'S WESTKUST SOCIETY
+    <small>Komunitas Kajian Sejarah Pantai Barat Sumatra</small>
+  </div>
+  <nav>
+    <a href="index.html">Beranda</a>
+    <a href="belajar-sejarah.html">Belajar Sejarah</a>
+    <a href="salam-redaksi.html">Salam dari Redaksi</a>
+    <a href="gabung-komunitas.html">Gabung Komunitas</a>
+    <a href="category.html?cat=Pantai%20Barat">Sejarah Pantai Barat</a>
+    <a href="category.html?cat=Nusantara">Sejarah Nusantara</a>
+    <a href="admin-v14-2-1-image-editor.html">Ruang Redaksi</a>
+  </nav>
+</header>
+
+<main>
+<section class="hero">
+  <h1>Sejarah, Sumber, dan Jejak Pantai Barat Sumatra</h1>
+  <p>
+    Ruang kajian untuk membaca kembali sejarah Pantai Barat Sumatra melalui
+    sumber primer, peta lama, arsip, historiografi, sejarah lisan, dan
+    pengalaman masyarakat.
+  </p>
+</section>
+
+<section class="section">
+  <div class="section-title">
+    <h2>Artikel Unggulan</h2>
+    <a href="category.html?cat=Pantai%20Barat">Lihat Sejarah Pantai Barat →</a>
+  </div>
+  <div id="featuredArea" class="featured">
+    <div class="empty">Memuat artikel unggulan…</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-title">
+    <h2>Artikel Terbaru</h2>
+    <a href="category.html?cat=Pantai%20Barat">Lihat semua →</a>
+  </div>
+  <div id="latestArea" class="latest">
+    <div class="empty">Memuat artikel terbaru…</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-title"><h2>Jelajahi Kajian</h2></div>
+  <div class="quick">
+    <div class="quick-card"><h3><a href="belajar-sejarah.html">Belajar Sejarah</a></h3><p>Mengenal sumber, heuristik, kritik sumber, interpretasi, historiografi, dan cara kerja penelitian sejarah.</p></div>
+    <div class="quick-card"><h3><a href="category.html?cat=Pantai%20Barat">Sejarah Pantai Barat</a></h3><p>Menelusuri kota, pelabuhan, tokoh, masyarakat, perdagangan, peta, dan arsip Pantai Barat Sumatra.</p></div>
+    <div class="quick-card"><h3><a href="category.html?cat=Nusantara">Sejarah Nusantara</a></h3><p>Memperluas perspektif sejarah dari Pantai Barat Sumatra ke ruang sejarah Nusantara.</p></div>
+  </div>
+</section>
+</main>
+
+<footer>© Sumatra's Westkust Society · Komunitas Kajian Sejarah Pantai Barat Sumatra</footer>
+
+<script>
+function esc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function fmt(d){return d?new Date(d).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'}):'';}
+async function apiGet(path){
+  const r=await fetch(window.SWS_SUPABASE_URL+path,{
+    headers:{apikey:window.SWS_SUPABASE_PUBLISHABLE_KEY,Authorization:'Bearer '+window.SWS_SUPABASE_PUBLISHABLE_KEY}
+  });
+  const text=await r.text();
+  if(!r.ok)throw new Error('Supabase HTTP '+r.status+': '+text);
+  return text?JSON.parse(text):[];
+}
+function card(a){
+  const image=a.cover_image?'<img src="'+esc(a.cover_image)+'" alt="'+esc(a.title)+'">':'';
+  return '<article class="article-card">'+image+
+    '<div class="body"><div class="category">'+esc(a.category||'Artikel')+'</div>'+
+    '<h3><a href="article.html?slug='+encodeURIComponent(a.slug)+'">'+esc(a.title)+'</a></h3>'+
+    (a.excerpt?'<p>'+esc(a.excerpt)+'</p>':'')+
+    '<div class="date">'+fmt(a.published_at)+'</div></div></article>';
+}
+async function loadHome(){
+  try{
+    if(!window.SWS_SUPABASE_URL||!window.SWS_SUPABASE_PUBLISHABLE_KEY)throw new Error('Konfigurasi Supabase belum termuat.');
+    const featured=await apiGet('/rest/v1/articles?select=id,title,slug,excerpt,category,author,cover_image,published_at,featured&status=eq.published&featured=eq.true&order=published_at.desc&limit=4');
+    const latest=await apiGet('/rest/v1/articles?select=id,title,slug,excerpt,category,author,cover_image,published_at&status=eq.published&order=published_at.desc&limit=9');
+
+    const fa=document.getElementById('featuredArea');
+    if(!featured.length){
+      fa.innerHTML='<div class="empty">Belum ada artikel yang ditandai sebagai Featured. Pilih <b>Jadikan Featured</b> dari Ruang Redaksi.</div>';
+    }else{
+      const main=featured[0];
+      const mainImg=main.cover_image?'<img src="'+esc(main.cover_image)+'" alt="'+esc(main.title)+'">':'';
+      const side=featured.slice(1).map(card).join('');
+      fa.innerHTML='<article class="feature-card">'+mainImg+
+        '<div class="feature-body"><div class="category">'+esc(main.category||'Artikel')+'</div>'+
+        '<h3><a href="article.html?slug='+encodeURIComponent(main.slug)+'">'+esc(main.title)+'</a></h3>'+
+        (main.excerpt?'<p>'+esc(main.excerpt)+'</p>':'')+
+        '<div class="date">'+fmt(main.published_at)+' · '+esc(main.author||'Sumatra\\'s Westkust Society')+'</div></div></article>'+
+        '<div class="side-list">'+side+'</div>';
+    }
+
+    const la=document.getElementById('latestArea');
+    if(!latest.length){la.innerHTML='<div class="empty">Belum ada artikel Published.</div>';return;}
+    la.innerHTML=latest.map(card).join('');
+  }catch(e){
+    document.getElementById('featuredArea').innerHTML='<div class="error">Gagal memuat artikel unggulan: '+esc(e.message)+'</div>';
+    document.getElementById('latestArea').innerHTML='<div class="error">Gagal memuat artikel terbaru: '+esc(e.message)+'</div>';
+  }
+}
+loadHome();
+</script>
+</body>
+</html>
