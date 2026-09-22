@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Gabung Komunitas — Sumatra's Westkust Society</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+
+<style>
+:root{
+  --ink:#17212b;
+  --muted:#66717c;
+  --paper:#f7f3ea;
+  --card:#fffdf8;
+  --line:#ddd4c5;
+  --accent:#8d3f25;
+  --green:#256d3c;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:Georgia,serif;
+}
+
+header{
+  background:#16212b;
+  color:#f8f2e6;
+  padding:22px 6%;
+}
+
+.brand{
+  font-size:25px;
+  letter-spacing:1px;
+}
+
+.tag{
+  color:#c9bda8;
+  font:13px Arial;
+  margin-top:4px;
+}
+
+nav{
+  display:flex;
+  gap:22px;
+  margin-top:16px;
+  flex-wrap:wrap;
+}
+
+nav a{
+  color:#f8f2e6;
+  text-decoration:none;
+  font:600 13px Arial;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+}
+
+.wrap{
+  max-width:900px;
+  margin:auto;
+  padding:55px 6% 80px;
+}
+
+.kicker{
+  color:var(--accent);
+  font:700 12px Arial;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+
+h1{
+  font-size:46px;
+  line-height:1.1;
+  margin:12px 0;
+}
+
+.intro{
+  color:#4e5963;
+  font-size:18px;
+  line-height:1.65;
+  max-width:760px;
+  margin-bottom:35px;
+}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  padding:30px;
+  border-radius:8px;
+}
+
+label{
+  display:block;
+  font:bold 14px Arial;
+  margin:18px 0 7px;
+}
+
+input,
+textarea,
+select{
+  width:100%;
+  padding:13px;
+  border:1px solid #cbd3d9;
+  border-radius:7px;
+  background:#fff;
+  font:14px Arial;
+}
+
+textarea{
+  min-height:120px;
+  resize:vertical;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+
+.checkbox{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  margin-top:22px;
+  font:13px Arial;
+  color:var(--muted);
+}
+
+.checkbox input{
+  width:auto;
+  margin-top:3px;
+}
+
+button{
+  margin-top:25px;
+  padding:13px 22px;
+  border:0;
+  border-radius:7px;
+  background:var(--accent);
+  color:white;
+  cursor:pointer;
+  font:bold 14px Arial;
+}
+
+button:disabled{
+  opacity:.6;
+  cursor:wait;
+}
+
+.status{
+  display:none;
+  padding:15px;
+  border-radius:7px;
+  margin-top:20px;
+  font:14px Arial;
+  line-height:1.5;
+}
+
+.success{
+  display:block;
+  background:#e8f5ec;
+  color:var(--green);
+}
+
+.error{
+  display:block;
+  background:#fdecec;
+  color:#a12626;
+}
+
+.note{
+  margin-top:20px;
+  padding:15px;
+  background:#f0ece4;
+  border-left:4px solid var(--accent);
+  font:13px Arial;
+  color:#59636c;
+  line-height:1.5;
+}
+
+footer{
+  background:#16212b;
+  color:#d9d0c2;
+  padding:40px 6%;
+  font:13px Arial;
+}
+
+@media(max-width:700px){
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  h1{
+    font-size:36px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="brand">
+SUMATRA'S WESTKUST SOCIETY
+</div>
+
+<div class="tag">
+Komunitas Kajian Sejarah Pantai Barat Sumatra
+</div>
+
+<nav>
+<a href="index.html">Beranda</a>
+<a href="belajar-sejarah.html">Belajar Sejarah</a>
+<a href="salam-redaksi.html">Salam dari Redaksi</a>
+<a href="gabung-komunitas.html">Gabung Komunitas</a>
+<a href="category.html?cat=Batahan">Sejarah Batahan</a>
+<a href="category.html?cat=Pantai%20Barat">Sejarah Pantai Barat</a>
+<a href="category.html?cat=Nusantara">Sejarah Nusantara</a>
+</nav>
+
+</header>
+
+
+<main class="wrap">
+
+<div class="kicker">
+Bergabung dalam kajian
+</div>
+
+<h1>
+Mari Menjadi Bagian dari Komunitas
+</h1>
+
+<p class="intro">
+Sumatra's Westkust Society terbuka bagi siapa saja yang memiliki
+ketertarikan pada sejarah Pantai Barat Sumatra, sejarah lokal,
+arsip, peta lama, sejarah lisan, Islam, budaya, dan warisan masyarakat.
+</p>
+
+
+<div class="card">
+
+<form id="memberForm">
+
+<div class="grid">
+
+<div>
+<label>Nama Lengkap *</label>
+<input
+  id="name"
+  required
+  placeholder="Nama lengkap"
+>
+</div>
+
+<div>
+<label>No. HP / WhatsApp *</label>
+<input
+  id="phone"
+  required
+  placeholder="08xxxxxxxxxx"
+>
+</div>
+
+</div>
+
+
+<div class="grid">
+
+<div>
+<label>Email</label>
+<input
+  id="email"
+  type="email"
+  placeholder="nama@email.com"
+>
+</div>
+
+<div>
+<label>Domisili Saat Ini</label>
+<input
+  id="domicile"
+  placeholder="Kota / Kabupaten"
+>
+</div>
+
+</div>
+
+
+<label>Asal Daerah</label>
+
+<input
+  id="origin"
+  placeholder="Contoh: Batahan, Mandailing Natal"
+>
+
+
+<label>
+Bidang yang Paling Diminati
+</label>
+
+<select id="interest">
+
+<option value="">
+Pilih bidang
+</option>
+
+<option>Sejarah Batahan</option>
+<option>Pantai Barat Sumatra</option>
+<option>Sejarah Nusantara</option>
+<option>Arsip & sumber primer</option>
+<option>Peta & toponimi</option>
+<option>Sejarah lisan & keluarga</option>
+<option>Islam & sejarah masyarakat</option>
+<option>Budaya & warisan lokal</option>
+<option>Lainnya</option>
+
+</select>
+
+
+<label>
+Mengapa tertarik bergabung?
+</label>
+
+<textarea
+  id="motivation"
+  placeholder="Ceritakan sedikit ketertarikan Anda..."
+></textarea>
+
+
+<label class="checkbox">
+
+<input
+  id="consent"
+  type="checkbox"
+  required
+>
+
+<span>
+Saya bersedia data yang saya berikan digunakan oleh
+Sumatra's Westkust Society untuk keperluan administrasi
+komunitas dan komunikasi terkait kegiatan komunitas.
+</span>
+
+</label>
+
+
+<button id="submitButton" type="submit">
+Daftar sebagai Anggota
+</button>
+
+
+<div id="status" class="status"></div>
+
+
+<div class="note">
+<strong>Catatan:</strong>
+Pendaftaran akan masuk dengan status <strong>Pending</strong>.
+Data anggota tidak ditampilkan kepada publik dan hanya dapat
+diakses oleh pengelola komunitas yang memiliki hak Admin.
+</div>
+
+</form>
+
+</div>
+
+</main>
+
+
+<footer>
+
+© 2026 Sumatra's Westkust Society ·
+Komunitas Kajian Sejarah Pantai Barat Sumatra
+
+</footer>
+
+
+<script>
+
+const supabaseClient =
+  window.supabase.createClient(
+    window.SWS_SUPABASE_URL,
+    window.SWS_SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+const form =
+  document.getElementById("memberForm");
+
+const button =
+  document.getElementById("submitButton");
+
+const status =
+  document.getElementById("status");
+
+
+form.addEventListener("submit", async function(e){
+
+  e.preventDefault();
+
+  button.disabled = true;
+  button.textContent = "Mengirim...";
+
+  status.className = "status";
+  status.textContent = "";
+
+
+  const member = {
+
+    name:
+      document.getElementById("name").value.trim(),
+
+    phone:
+      document.getElementById("phone").value.trim(),
+
+    email:
+      document.getElementById("email").value.trim() || null,
+
+    domicile:
+      document.getElementById("domicile").value.trim() || null,
+
+    origin:
+      document.getElementById("origin").value.trim() || null,
+
+    interest:
+      document.getElementById("interest").value || null,
+
+    motivation:
+      document.getElementById("motivation").value.trim() || null
+
+  };
+
+
+  const { data, error } =
+    await supabaseClient
+      .from("members")
+      .insert([member])
+      .select()
+      .single();
+
+
+  if(error){
+
+    console.error(error);
+
+    status.className = "status error";
+
+    status.textContent =
+      "Pendaftaran belum berhasil. Silakan coba lagi. " +
+      "Detail: " + error.message;
+
+    button.disabled = false;
+    button.textContent = "Daftar sebagai Anggota";
+
+    return;
+  }
+
+
+  status.className = "status success";
+
+  status.innerHTML =
+    "<strong>Pendaftaran berhasil!</strong><br>" +
+    "Terima kasih. Data Anda sudah masuk ke database " +
+    "dan sedang menunggu verifikasi pengelola komunitas.";
+
+
+  form.reset();
+
+  button.disabled = false;
+  button.textContent = "Daftar sebagai Anggota";
+
+});
+
+
+</script>
+
+</body>
+</html>
