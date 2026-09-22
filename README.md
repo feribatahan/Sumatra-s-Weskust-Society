@@ -32,3 +32,22 @@ V5 — BELAJAR SEJARAH
 - Objektivitas
 - Kamus istilah
 - Bacaan dasar
+
+
+V6 — NAVIGASI
+- Belajar Sejarah dipindahkan menjadi menu kedua setelah Beranda.
+- Urutan: Beranda → Belajar Sejarah → Sejarah Batahan → Sejarah Pantai Barat → Sejarah Nusantara → Ruang Redaksi.
+
+
+V7 — SALAM DARI REDAKSI
+- Menu statis Salam dari Redaksi
+- Founder: Feri Susanto
+- Latar belakang pendirian situs
+- Penjelasan tujuan dan semangat kajian Pantai Barat Sumatra
+- Rujukan awal Bambang Purwanto dan Gusti Asnan
+
+
+V8 — FOUNDER PORTRAIT
+- Menambahkan foto Feri Susanto pada halaman Salam dari Redaksi.
+- File gambar: feri-susanto-founder.jpg
+- Tampilan responsif desktop dan mobile.
