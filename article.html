@@ -59,35 +59,57 @@ footer{background:var(--navy);color:#dce2e7;padding:25px 6%;font-family:Arial,sa
 <footer>© Sumatra's Westkust Society · Komunitas Kajian Sejarah Pantai Barat Sumatra</footer>
 
 <script>
-let supabaseClient;
 function esc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
 function fmt(d){return d?new Date(d).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'}):'';}
 function setState(text,error=false){const e=document.getElementById('state');e.textContent=text;e.className='state'+(error?' error':'');e.hidden=false;document.getElementById('article').hidden=true;}
+async function apiGet(path){
+  const url=window.SWS_SUPABASE_URL+path;
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),10000);
+  try{
+    const r=await fetch(url,{method:'GET',headers:{
+      apikey:window.SWS_SUPABASE_PUBLISHABLE_KEY,
+      Authorization:'Bearer '+window.SWS_SUPABASE_PUBLISHABLE_KEY
+    },signal:controller.signal});
+    const text=await r.text();
+    if(!r.ok) throw new Error('Supabase HTTP '+r.status+': '+text);
+    return text?JSON.parse(text):[];
+  }catch(e){
+    if(e.name==='AbortError') throw new Error('Permintaan ke Supabase timeout setelah 10 detik.');
+    throw e;
+  }finally{clearTimeout(timer);}
+}
 async function load(){
- try{
-   if(!window.SWS_SUPABASE_URL||!window.SWS_SUPABASE_PUBLISHABLE_KEY)throw new Error('Konfigurasi Supabase belum tersedia.');
-   supabaseClient=window.supabase.createClient(window.SWS_SUPABASE_URL,window.SWS_SUPABASE_PUBLISHABLE_KEY);
-   const slug=new URLSearchParams(location.search).get('slug');
-   if(!slug){setState('Artikel tidak ditemukan. URL belum memiliki slug.',true);return;}
-   const {data,error}=await supabaseClient.from('articles').select('id,title,slug,excerpt,content,category,author,cover_image,status,published_at,created_at,featured').eq('slug',slug).eq('status','published').maybeSingle();
-   if(error)throw error;
-   if(!data){setState('Artikel tidak ditemukan atau belum dipublikasikan.',true);return;}
-   document.title=data.title+' — Sumatra\'s Westkust Society';
-   document.getElementById('title').textContent=data.title;
-   document.getElementById('meta').innerHTML=(data.category?'<strong>'+esc(data.category)+'</strong> · ':'')+esc(data.author||'Sumatra\'s Westkust Society')+' · '+fmt(data.published_at||data.created_at);
-   const ex=document.getElementById('excerpt');if(data.excerpt){ex.textContent=data.excerpt;ex.hidden=false;}else ex.hidden=true;
-   const cover=document.getElementById('cover');if(data.cover_image){cover.src=data.cover_image;cover.alt=data.title;cover.hidden=false;}else cover.hidden=true;
-   document.getElementById('content').innerHTML=data.content||'';
-   document.getElementById('state').hidden=true;document.getElementById('article').hidden=false;
-   await loadRelated(data);
- }catch(e){setState('Gagal memuat artikel: '+e.message,true);}
+  try{
+    if(!window.SWS_SUPABASE_URL||!window.SWS_SUPABASE_PUBLISHABLE_KEY) throw new Error('supabase-config.js belum termuat.');
+    const slug=new URLSearchParams(location.search).get('slug');
+    if(!slug){setState('Artikel tidak ditemukan. URL belum memiliki slug.',true);return;}
+    const q='/rest/v1/articles?select=id,title,slug,excerpt,content,category,author,cover_image,status,published_at,created_at,featured&slug=eq.'+encodeURIComponent(slug)+'&status=eq.published&limit=1';
+    const rows=await apiGet(q);
+    if(!rows.length){setState('Artikel tidak ditemukan atau belum dipublikasikan.',true);return;}
+    const data=rows[0];
+    document.title=data.title+' — Sumatra\'s Westkust Society';
+    document.getElementById('title').textContent=data.title;
+    document.getElementById('meta').innerHTML=(data.category?'<strong>'+esc(data.category)+'</strong> · ':'')+esc(data.author||"Sumatra's Westkust Society")+' · '+fmt(data.published_at||data.created_at);
+    const ex=document.getElementById('excerpt');
+    if(data.excerpt){ex.textContent=data.excerpt;ex.hidden=false;}else ex.hidden=true;
+    const cover=document.getElementById('cover');
+    if(data.cover_image){cover.src=data.cover_image;cover.alt=data.title;cover.hidden=false;}else cover.hidden=true;
+    document.getElementById('content').innerHTML=data.content||'';
+    document.getElementById('state').hidden=true;
+    document.getElementById('article').hidden=false;
+    await loadRelated(data);
+  }catch(e){setState('Gagal memuat artikel: '+e.message,true);}
 }
 async function loadRelated(current){
- if(!current.category)return;
- const {data}=await supabaseClient.from('articles').select('title,slug,excerpt,category,published_at').eq('status','published').eq('category',current.category).neq('id',current.id).order('published_at',{ascending:false}).limit(4);
- if(!data||!data.length)return;
- document.getElementById('relatedGrid').innerHTML=data.map(a=>'<div class="related-card"><a href="article.html?slug='+encodeURIComponent(a.slug)+'"><h3>'+esc(a.title)+'</h3></a>'+(a.excerpt?'<p>'+esc(a.excerpt)+'</p>':'')+'</div>').join('');
- document.getElementById('related').hidden=false;
+  if(!current.category)return;
+  try{
+    const q='/rest/v1/articles?select=id,title,slug,excerpt,category,published_at&status=eq.published&category=eq.'+encodeURIComponent(current.category)+'&id=neq.'+current.id+'&order=published_at.desc&limit=4';
+    const data=await apiGet(q);
+    if(!data.length)return;
+    document.getElementById('relatedGrid').innerHTML=data.map(a=>'<div class="related-card"><a href="article.html?slug='+encodeURIComponent(a.slug)+'"><h3>'+esc(a.title)+'</h3></a>'+(a.excerpt?'<p>'+esc(a.excerpt)+'</p>':'')+'</div>').join('');
+    document.getElementById('related').hidden=false;
+  }catch(e){console.warn('Related articles:',e);}
 }
 load();
 </script>
