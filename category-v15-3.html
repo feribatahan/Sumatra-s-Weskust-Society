@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kategori — Sumatra's Westkust Society</title>
+<script src="supabase-config.js"></script>
+<style>
+:root{
+  --navy:#16222d;
+  --cream:#f7f3ea;
+  --paper:#fffdf9;
+  --ink:#17212b;
+  --muted:#536170;
+  --accent:#a74722;
+  --line:#ddd4c6;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:Georgia,"Times New Roman",serif}
+header{background:var(--navy);color:#fff;padding:18px 24px 22px}
+.brand{font-family:Arial,Helvetica,sans-serif;font-weight:800;letter-spacing:.4px;font-size:22px}
+.tagline{margin-top:4px;color:#d8dde2;font-family:Arial,Helvetica,sans-serif;font-size:16px}
+nav{display:flex;gap:28px;flex-wrap:wrap;margin-top:20px}
+nav a{color:#fff;text-decoration:none;font-family:Arial,Helvetica,sans-serif;font-weight:700;font-size:16px}
+nav a:hover{color:#f0c5ae}
+main{max-width:1080px;margin:0 auto;padding:62px 18px 80px}
+.kicker{font-family:Arial,Helvetica,sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-weight:700;color:var(--accent);font-size:13px}
+h1{font-size:58px;line-height:1.02;margin:10px 0 16px;letter-spacing:-1px}
+.intro{font-size:21px;line-height:1.7;color:#465463;max-width:820px;margin:0 0 42px}
+.toolbar{display:flex;justify-content:space-between;align-items:end;gap:20px;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:28px}
+.toolbar h2{font-size:31px;margin:0}
+.count{font-family:Arial,Helvetica,sans-serif;color:var(--muted);font-size:14px}
+.status{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px;font-family:Arial,Helvetica,sans-serif;color:#536170}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 2px 7px rgba(22,34,45,.04);transition:transform .15s ease,box-shadow .15s ease}
+.card:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(22,34,45,.08)}
+.card img{width:100%;height:190px;object-fit:cover;display:block}
+.card-body{padding:19px}
+.category{font-family:Arial,Helvetica,sans-serif;text-transform:uppercase;letter-spacing:.5px;font-weight:800;color:var(--accent);font-size:12px}
+.card h3{font-size:25px;line-height:1.13;margin:9px 0 10px}
+.card p{font-size:16px;line-height:1.55;color:#536170;margin:0 0 13px}
+.meta{font-family:Arial,Helvetica,sans-serif;color:#71808c;font-size:13px}
+.card a{display:block;color:inherit;text-decoration:none}
+.empty{grid-column:1/-1}
+footer{border-top:1px solid var(--line);max-width:1080px;margin:0 auto;padding:22px 18px 40px;color:#687581;font-family:Arial,Helvetica,sans-serif;font-size:13px}
+@media(max-width:800px){
+  h1{font-size:44px}
+  .grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:560px){
+  header{padding:16px 18px 20px}
+  nav{gap:15px}
+  nav a{font-size:14px}
+  main{padding-top:42px}
+  h1{font-size:38px}
+  .intro{font-size:18px}
+  .grid{grid-template-columns:1fr}
+  .toolbar{align-items:start;flex-direction:column}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">SUMATRA'S WESTKUST SOCIETY</div>
+  <div class="tagline">Komunitas Kajian Sejarah Pantai Barat Sumatra</div>
+  <nav>
+    <a href="index.html">Beranda</a>
+    <a href="belajar-sejarah.html">Belajar Sejarah</a>
+    <a href="salam-redaksi.html">Salam dari Redaksi</a>
+    <a href="gabung-komunitas.html">Gabung Komunitas</a>
+    <a href="category.html?cat=Pantai%20Barat">Sejarah Pantai Barat</a>
+    <a href="category.html?cat=Nusantara">Sejarah Nusantara</a>
+    <a href="admin-v14-2-1-image-editor.html">Ruang Redaksi</a>
+  </nav>
+</header>
+
+<main>
+  <div class="kicker">Ruang Kajian</div>
+  <h1 id="page-title">Sejarah Pantai Barat</h1>
+  <p class="intro" id="page-intro">Artikel, sumber, dan kajian mengenai sejarah Pantai Barat Sumatra.</p>
+
+  <div class="toolbar">
+    <h2>Artikel</h2>
+    <div class="count" id="count">Memuat artikel…</div>
+  </div>
+
+  <div id="status" class="status">Memuat artikel dari arsip digital…</div>
+  <section id="grid" class="grid" style="display:none"></section>
+</main>
+
+<footer>Sumatra's Westkust Society — membaca sejarah melalui sumber, arsip, peta, dan jejak masyarakat.</footer>
+
+<script>
+(() => {
+  const SUPA = window.SWS_SUPABASE_URL;
+  const KEY = window.SWS_SUPABASE_PUBLISHABLE_KEY;
+  const params = new URLSearchParams(location.search);
+  const rawCat = (params.get('cat') || 'Pantai Barat').trim();
+
+  const categoryMap = {
+    'Pantai Barat': {
+      db: 'Sejarah Pantai Barat',
+      title: 'Sejarah Pantai Barat',
+      intro: 'Artikel, sumber, dan kajian mengenai sejarah Pantai Barat Sumatra.'
+    },
+    'Sejarah Pantai Barat': {
+      db: 'Sejarah Pantai Barat',
+      title: 'Sejarah Pantai Barat',
+      intro: 'Artikel, sumber, dan kajian mengenai sejarah Pantai Barat Sumatra.'
+    },
+    'Nusantara': {
+      db: 'Sejarah Nusantara',
+      title: 'Sejarah Nusantara',
+      intro: 'Artikel dan kajian yang menempatkan sejarah Pantai Barat Sumatra dalam konteks sejarah Nusantara.'
+    },
+    'Sejarah Nusantara': {
+      db: 'Sejarah Nusantara',
+      title: 'Sejarah Nusantara',
+      intro: 'Artikel dan kajian yang menempatkan sejarah Pantai Barat Sumatra dalam konteks sejarah Nusantara.'
+    }
+  };
+
+  const cfg = categoryMap[rawCat] || {
+    db: rawCat,
+    title: rawCat,
+    intro: 'Artikel dan kajian dalam kategori ini.'
+  };
+
+  document.getElementById('page-title').textContent = cfg.title;
+  document.getElementById('page-intro').textContent = cfg.intro;
+  document.title = cfg.title + " — Sumatra's Westkust Society";
+
+  const status = document.getElementById('status');
+  const grid = document.getElementById('grid');
+  const count = document.getElementById('count');
+
+  function esc(v){
+    return String(v ?? '').replace(/[&<>"']/g, c => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
+    }[c]));
+  }
+
+  function formatDate(v){
+    if(!v) return '';
+    return new Intl.DateTimeFormat('id-ID',{
+      day:'numeric',month:'long',year:'numeric'
+    }).format(new Date(v));
+  }
+
+  function card(a){
+    const image = a.cover_image
+      ? `<img src="${esc(a.cover_image)}" alt="${esc(a.title)}">`
+      : '';
+    return `
+      <article class="card">
+        <a href="article.html?slug=${encodeURIComponent(a.slug)}">
+          ${image}
+          <div class="card-body">
+            <div class="category">${esc(a.category || cfg.title)}</div>
+            <h3>${esc(a.title)}</h3>
+            ${a.excerpt ? `<p>${esc(a.excerpt)}</p>` : ''}
+            <div class="meta">${esc(a.author || "Sumatra's Westkust Society")}${a.published_at ? ' · ' + esc(formatDate(a.published_at)) : ''}</div>
+          </div>
+        </a>
+      </article>`;
+  }
+
+  async function load(){
+    if(!SUPA || !KEY){
+      status.textContent = 'Konfigurasi Supabase tidak ditemukan.';
+      count.textContent = 'Konfigurasi error';
+      return;
+    }
+
+    try{
+      const query =
+        '/rest/v1/articles?select=id,title,slug,excerpt,category,author,cover_image,published_at,featured,status'
+        + '&status=eq.published'
+        + '&category=eq.' + encodeURIComponent(cfg.db)
+        + '&order=published_at.desc.nullslast,created_at.desc'
+        + '&limit=100';
+
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 10000);
+
+      const res = await fetch(SUPA + query, {
+        signal: controller.signal,
+        headers: {
+          apikey: KEY,
+          Authorization: 'Bearer ' + KEY
+        }
+      });
+
+      clearTimeout(timer);
+
+      if(!res.ok){
+        const body = await res.text();
+        throw new Error('HTTP ' + res.status + (body ? ': ' + body.slice(0,180) : ''));
+      }
+
+      const articles = await res.json();
+      count.textContent = articles.length + (articles.length === 1 ? ' artikel' : ' artikel');
+
+      if(!articles.length){
+        status.innerHTML = 'Belum ada artikel yang dipublikasikan dalam kategori ini.';
+        return;
+      }
+
+      status.style.display = 'none';
+      grid.style.display = 'grid';
+      grid.innerHTML = articles.map(card).join('');
+    }catch(err){
+      console.error(err);
+      count.textContent = 'Gagal memuat';
+      status.innerHTML = 'Artikel belum dapat dimuat. <strong>' + esc(err.message || 'Terjadi kesalahan.') + '</strong>';
+    }
+  }
+
+  load();
+})();
+</script>
+</body>
+</html>
