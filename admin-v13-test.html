@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin V13 Test — Sumatra's Westkust Society</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#eef1f3;
+  color:#17212b;
+}
+.wrap{
+  max-width:800px;
+  margin:50px auto;
+  padding:20px;
+}
+.card{
+  background:white;
+  border:1px solid #d7dde1;
+  border-radius:12px;
+  padding:25px;
+  margin-bottom:20px;
+  box-shadow:0 8px 25px rgba(0,0,0,.06);
+}
+h1{margin-top:0}
+label{
+  display:block;
+  font-weight:bold;
+  margin:15px 0 7px;
+}
+input{
+  width:100%;
+  padding:12px;
+  box-sizing:border-box;
+  border:1px solid #cbd3d9;
+  border-radius:7px;
+}
+button{
+  margin-top:18px;
+  padding:11px 18px;
+  border:0;
+  border-radius:7px;
+  background:#8d3f25;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+button.secondary{
+  background:#59636c;
+}
+.status{
+  padding:12px;
+  border-radius:7px;
+  background:#f4f5f6;
+  margin-top:15px;
+}
+.success{
+  background:#e8f5ec;
+  color:#256d3c;
+}
+.error{
+  background:#fdecec;
+  color:#a12626;
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:15px;
+}
+th,td{
+  text-align:left;
+  padding:10px;
+  border-bottom:1px solid #ddd;
+}
+#dashboard{
+  display:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+<div class="card" id="loginBox">
+
+<h1>Ruang Redaksi — V13 Test</h1>
+
+<p>
+Tes koneksi Supabase, login Admin, dan akses data anggota.
+</p>
+
+<label>Email Admin</label>
+<input
+  id="email"
+  type="email"
+  placeholder="Email Admin"
+>
+
+<label>Password</label>
+<input
+  id="password"
+  type="password"
+  placeholder="Password"
+>
+
+<button onclick="login()">
+Masuk
+</button>
+
+<div id="loginStatus" class="status">
+Belum login.
+</div>
+
+</div>
+
+
+<div class="card" id="dashboard">
+
+<h1>✓ Admin Terverifikasi</h1>
+
+<div id="adminStatus" class="status success">
+Login berhasil dan akun terdaftar sebagai Admin.
+</div>
+
+<button class="secondary" onclick="loadMembers()">
+Muat Data Anggota
+</button>
+
+<button class="secondary" onclick="logout()">
+Logout
+</button>
+
+<div id="memberStatus" class="status">
+Belum memuat data anggota.
+</div>
+
+<div id="memberTable"></div>
+
+</div>
+
+</div>
+
+
+<script>
+
+const supabaseClient = window.supabase.createClient(
+  window.SWS_SUPABASE_URL,
+  window.SWS_SUPABASE_PUBLISHABLE_KEY,
+  {
+    auth:{
+      persistSession:true,
+      autoRefreshToken:true,
+      detectSessionInUrl:false
+    }
+  }
+);
+
+
+async function login(){
+
+  const email =
+    document.getElementById("email").value.trim();
+
+  const password =
+    document.getElementById("password").value;
+
+  const status =
+    document.getElementById("loginStatus");
+
+  status.className = "status";
+  status.textContent = "Sedang login...";
+
+
+  const { data, error } =
+    await supabaseClient.auth.signInWithPassword({
+      email:email,
+      password:password
+    });
+
+
+  if(error){
+
+    status.className = "status error";
+
+    status.textContent =
+      "Login gagal: " + error.message;
+
+    return;
+  }
+
+
+  status.className = "status success";
+  status.textContent = "Login berhasil. Memeriksa hak Admin...";
+
+
+  const { data:isAdmin, error:adminError } =
+    await supabaseClient.rpc("is_admin");
+
+
+  if(adminError){
+
+    status.className = "status error";
+
+    status.textContent =
+      "Login berhasil, tetapi pemeriksaan Admin gagal: "
+      + adminError.message;
+
+    return;
+  }
+
+
+  if(!isAdmin){
+
+    await supabaseClient.auth.signOut();
+
+    status.className = "status error";
+
+    status.textContent =
+      "Akun berhasil login tetapi bukan Admin.";
+
+    return;
+  }
+
+
+  document.getElementById("loginBox").style.display="none";
+
+  document.getElementById("dashboard").style.display="block";
+
+  await loadMembers();
+
+}
+
+
+async function loadMembers(){
+
+  const status =
+    document.getElementById("memberStatus");
+
+  status.className = "status";
+
+  status.textContent =
+    "Mengambil data anggota dari Supabase...";
+
+
+  const { data, error } =
+    await supabaseClient
+      .from("members")
+      .select("*")
+      .order("created_at",{ascending:false});
+
+
+  if(error){
+
+    status.className = "status error";
+
+    status.textContent =
+      "Gagal mengambil data: " + error.message;
+
+    return;
+  }
+
+
+  status.className = "status success";
+
+  status.textContent =
+    "Berhasil mengambil " + data.length +
+    " data anggota.";
+
+
+  if(!data.length){
+
+    document.getElementById("memberTable").innerHTML =
+      "<p>Belum ada anggota.</p>";
+
+    return;
+  }
+
+
+  let html = `
+  <table>
+    <thead>
+      <tr>
+        <th>Nama</th>
+        <th>WhatsApp</th>
+        <th>Domisili</th>
+        <th>Asal</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+  `;
+
+
+  data.forEach(member=>{
+
+    html += `
+      <tr>
+        <td>${escapeHtml(member.name)}</td>
+        <td>${escapeHtml(member.phone)}</td>
+        <td>${escapeHtml(member.domicile || "-")}</td>
+        <td>${escapeHtml(member.origin || "-")}</td>
+        <td>${escapeHtml(member.status)}</td>
+      </tr>
+    `;
+
+  });
+
+
+  html += `
+    </tbody>
+  </table>
+  `;
+
+
+  document.getElementById("memberTable").innerHTML =
+    html;
+
+}
+
+
+async function logout(){
+
+  await supabaseClient.auth.signOut();
+
+  location.reload();
+
+}
+
+
+function escapeHtml(value){
+
+  return String(value || "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+async function checkExistingSession(){
+
+  const { data } =
+    await supabaseClient.auth.getSession();
+
+  if(data.session){
+
+    const { data:isAdmin } =
+      await supabaseClient.rpc("is_admin");
+
+    if(isAdmin){
+
+      document.getElementById("loginBox").style.display="none";
+
+      document.getElementById("dashboard").style.display="block";
+
+      loadMembers();
+
+    }
+
+  }
+
+}
+
+
+checkExistingSession();
+
+</script>
+
+</body>
+</html>
