@@ -21,3 +21,14 @@ admin / westkust2026
 Catatan:
 Masih menggunakan localStorage. V5 sebaiknya memakai GitHub-backed publishing/database agar
 artikel dapat dipublikasikan online dari Ruang Redaksi dan tidak terikat satu browser.
+
+
+V5 — BELAJAR SEJARAH
+- Menu utama baru: Belajar Sejarah
+- Materi pengantar ilmu sejarah
+- Metodologi penelitian sejarah
+- Sumber sejarah
+- Historiografi
+- Objektivitas
+- Kamus istilah
+- Bacaan dasar
