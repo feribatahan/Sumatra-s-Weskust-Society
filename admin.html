@@ -1,45 +1,141 @@
-<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Ruang Redaksi — Westkust Society</title><style>
-*{box-sizing:border-box}body{margin:0;background:#eef1f3;color:#17212b;font:14px Arial}.top{background:#16212b;color:#fff;padding:18px 4%;display:flex;justify-content:space-between}.wrap{max-width:1250px;margin:auto;padding:30px 4%}.panel{background:#fff;border:1px solid #d7dde1;border-radius:10px;padding:22px;margin-bottom:20px}input,select,textarea{width:100%;padding:11px;margin:6px 0 14px;border:1px solid #ccd3d8;border-radius:6px;font:14px Arial}textarea{min-height:160px}button{background:#8d3f25;color:#fff;border:0;padding:11px 17px;border-radius:6px;cursor:pointer;margin-right:7px}.secondary{background:#59636c}.danger{background:#a12626}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.row{display:grid;grid-template-columns:1fr 1fr;gap:15px}.item{padding:15px 0;border-bottom:1px solid #e1e5e8}.item h3{margin:0 0 5px}.hint{font-size:12px;color:#66717c}.badge{display:inline-block;padding:4px 7px;border-radius:99px;background:#f0e8df;color:#8d3f25;font-size:11px;margin:2px}@media(max-width:700px){.row{grid-template-columns:1fr}}</style></head><body>
-<div class="top"><b>RUANG REDAKSI · V9</b><span id="who"></span></div><main class="wrap">
-<section id="loginBox" class="panel" style="max-width:420px;margin:50px auto"><h2>Masuk</h2><input id="u" placeholder="Username"><input id="pw" type="password" placeholder="Password"><p class="hint">Demo login: <b>admin</b> / <b>westkust2026</b></p><button type="button" onclick="doLogin()">Masuk</button><p id="err"></p></section>
-<div id="desk" style="display:none">
-<section class="panel"><div class="toolbar"><button onclick="newArticle()">+ Artikel Baru</button><button class="secondary" onclick="exportJSON()">Export JSON</button><button class="secondary" onclick="location.href='index.html'">Lihat Situs</button><button class="secondary" onclick="logout()">Keluar</button></div></section>
-<section class="panel"><h2>Editor Artikel</h2><input type="hidden" id="id">
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ruang Redaksi — Sumatra's Westkust Society</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#eef1f3;color:#17212b;font:14px Arial,sans-serif}
+.top{height:64px;background:#16212b;color:#fff;padding:0 5%;display:flex;align-items:center;justify-content:space-between}
+.brand{font-weight:700;letter-spacing:.4px}.version{font-size:11px;color:#b9c2c9}
+.wrap{max-width:1200px;margin:auto;padding:32px 4%}
+.login-wrap{min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center}
+.login-card{width:100%;max-width:460px;background:#fff;border:1px solid #d5dce1;border-radius:14px;padding:32px;box-shadow:0 15px 45px rgba(0,0,0,.08)}
+.login-card h1{margin:0 0 8px;font-size:30px}.sub{color:#66717c;margin-bottom:28px;line-height:1.5}
+label{display:block;font-weight:700;margin:14px 0 7px}input,select,textarea{width:100%;padding:12px;border:1px solid #cbd3d9;border-radius:7px;background:#fff;font:14px Arial}textarea{min-height:160px;resize:vertical}
+.password-row{display:flex;gap:8px}.password-row input{flex:1}.showbtn{background:#eef1f3!important;color:#17212b!important;border:1px solid #cbd3d9!important;margin:0!important}
+button{border:0;border-radius:7px;padding:11px 16px;background:#8d3f25;color:#fff;cursor:pointer;font-weight:700}button:hover{opacity:.92}
+.login-button{width:100%;margin-top:20px;font-size:15px}.hint{font-size:12px;color:#66717c;margin-top:18px}.demo{background:#f7f3ea;border:1px solid #ddd4c5;border-radius:8px;padding:12px;margin-top:18px;font-family:monospace}
+.error{color:#a12626;margin:12px 0 0;min-height:18px}.success{color:#256d3c}
+#desk{display:none}.dash-head{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:20px}.dash-head h1{margin:0;font-size:28px}.actions{display:flex;gap:8px;flex-wrap:wrap}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-bottom:20px}.stat{background:#fff;border:1px solid #d7dde1;border-radius:10px;padding:18px}.stat b{font-size:27px;display:block;margin-top:5px}.stat span{font-size:12px;color:#66717c}
+.panel{background:#fff;border:1px solid #d7dde1;border-radius:10px;padding:22px;margin-bottom:20px}.panel h2{margin-top:0}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:15px}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.secondary{background:#59636c}.danger{background:#a12626}
+.item{padding:15px 0;border-bottom:1px solid #e1e5e8}.item:last-child{border-bottom:0}.item h3{margin:0 0 7px;font-size:17px}.badge{display:inline-block;padding:4px 7px;border-radius:99px;background:#f0e8df;color:#8d3f25;font-size:11px;margin:2px}.muted{color:#66717c;font-size:12px}
+@media(max-width:700px){.row,.stats{grid-template-columns:1fr}.dash-head{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<header class="top"><div class="brand">SUMATRA'S WESTKUST SOCIETY · RUANG REDAKSI</div><div class="version">V10</div></header>
+
+<section id="loginScreen" class="login-wrap">
+<div class="login-card">
+<h1>Masuk</h1>
+<div class="sub">Ruang redaksi untuk mengelola artikel Sumatra's Westkust Society.</div>
+<label for="username">Username</label>
+<input id="username" autocomplete="username" value="admin">
+<label for="password">Password</label>
+<div class="password-row"><input id="password" type="password" autocomplete="current-password"><button class="showbtn" type="button" onclick="togglePassword()">Tampilkan</button></div>
+<div id="loginError" class="error"></div>
+<button class="login-button" type="button" onclick="handleLogin()">Masuk ke Ruang Redaksi</button>
+<div class="demo"><b>Login demo</b><br>Username: admin<br>Password: westkust2026</div>
+<div class="hint">Tip: jika GitHub Pages menampilkan versi lama, gunakan Ctrl + F5.</div>
+</div>
+</section>
+
+<main id="desk" class="wrap">
+<section class="dash-head"><div><h1>Dashboard Redaksi</h1><div class="muted">Kelola tulisan, sumber, dan dokumentasi sejarah.</div></div>
+<div class="actions"><button onclick="newArticle()">+ Artikel Baru</button><button class="secondary" onclick="exportJSON()">Export JSON</button><button class="secondary" onclick="location.href='index.html'">Lihat Situs</button><button class="secondary" onclick="logout()">Keluar</button></div></section>
+
+<section class="stats">
+<div class="stat"><span>Total artikel</span><b id="total">0</b></div>
+<div class="stat"><span>Sejarah Batahan</span><b id="batahanCount">0</b></div>
+<div class="stat"><span>Sejarah Pantai Barat</span><b id="westCount">0</b></div>
+</section>
+
+<section class="panel"><h2>Editor Artikel</h2>
+<input type="hidden" id="id">
 <label>Judul</label><input id="title" placeholder="Contoh: Batahan dalam Kontrak VOC 1693">
 <div class="row"><div><label>Kategori</label><select id="category"><option>Sejarah Batahan</option><option>Sejarah Pantai Barat</option><option>Sejarah Nusantara</option></select></div><div><label>Tanggal</label><input id="date" type="date"></div></div>
-<label>Penulis</label><input id="author" value="Sumatra's Westkust Society">
+<label>Penulis</label><input id="author" value="Feri Susanto">
 <label>Cover / URL Gambar</label><input id="cover" placeholder="https://.../gambar.jpg">
 <label>Tag</label><input id="tags" placeholder="Batahan, VOC, 1693, Pantai Barat Sumatra">
 <label>Ringkasan</label><textarea id="excerpt" style="min-height:90px"></textarea>
-<label>Isi Artikel (HTML)</label><textarea id="content" placeholder="<p>...</p>"></textarea>
-<h3>Jejak Sumber</h3><p class="hint">Pisahkan setiap sumber dengan satu baris. Format: JENIS | JUDUL / DOKUMEN | DETAIL / HALAMAN | URL (opsional)</p>
-<textarea id="sources" style="min-height:180px" placeholder="PRIMER | Contract VOC 1693 | ANRI DXLVI-546 |&#10;SEKUNDER | Claudine Salmon | ... |"></textarea>
-<label>Catatan Penulis</label><textarea id="notes" style="min-height:110px" placeholder="Keterangan interpretasi, keterbatasan sumber, perbedaan pembacaan, dll."></textarea>
+<label>Isi Artikel (HTML)</label><textarea id="content" placeholder="<p>Isi artikel...</p>"></textarea>
+<h3>Jejak Sumber</h3><div class="muted">Format: JENIS | JUDUL/DOKUMEN | DETAIL/HALAMAN | URL OPSIONAL</div>
+<textarea id="sources" placeholder="PRIMER | Contract VOC 1693 | ANRI DXLVI-546 |&#10;SEKUNDER | Nama buku/jurnal | halaman | https://..."></textarea>
+<label>Catatan Penulis</label><textarea id="notes" style="min-height:110px"></textarea>
 <label>Sumber & Referensi Lengkap</label><textarea id="references" style="min-height:130px"></textarea>
-<div class="toolbar"><button onclick="save()">Simpan</button><button class="secondary" onclick="preview()">Preview</button><button class="danger" onclick="del()">Hapus</button></div></section>
+<div class="toolbar"><button onclick="saveArticle()">Simpan Artikel</button><button class="secondary" onclick="previewArticle()">Preview</button><button class="danger" onclick="deleteArticle()">Hapus</button></div>
+</section>
+
 <section class="panel"><h2>Daftar Artikel</h2><div id="list"></div></section>
-</div></main>
+</main>
+
 <script>
-const KEY='sws_articles',USER='admin',PASS='westkust2026';let A=JSON.parse(localStorage.getItem(KEY)||'[]');
-function doLogin(){
-  const username=document.getElementById('u').value.trim();
-  const password=document.getElementById('pw').value;
-  if(username===USER && password===PASS){
-    sessionStorage.setItem('sws','1');
-    show();
-  }else{
-    document.getElementById('err').textContent='Username atau password salah.';
-  }
+(function(){
+"use strict";
+const USER="admin", PASS="westkust2026", KEY="sws_articles";
+let articles=JSON.parse(localStorage.getItem(KEY)||"[]");
+
+function $(id){return document.getElementById(id)}
+window.togglePassword=function(){const p=$("password");p.type=p.type==="password"?"text":"password"}
+window.handleLogin=function(){
+ const u=$("username").value.trim(), p=$("password").value;
+ if(u===USER && p===PASS){
+   sessionStorage.setItem("sws_authenticated","1");
+   $("loginScreen").style.display="none";
+   $("desk").style.display="block";
+   render();
+   newArticle();
+ }else{
+   $("loginError").textContent="Username atau password salah. Gunakan login demo yang tampil di bawah.";
+ }
+};
+window.logout=function(){sessionStorage.removeItem("sws_authenticated");location.reload()};
+window.newArticle=function(){
+ ["id","title","cover","tags","excerpt","content","sources","notes","references"].forEach(k=>$(k).value="");
+ $("category").value="Sejarah Batahan";
+ $("date").value=new Date().toISOString().slice(0,10);
+ $("author").value="Feri Susanto";
+ window.scrollTo({top:0,behavior:"smooth"});
+};
+window.saveArticle=function(){
+ const obj={id:$("id").value||Date.now().toString(),title:$("title").value.trim(),category:$("category").value,date:$("date").value,author:$("author").value.trim(),cover:$("cover").value.trim(),tags:$("tags").value.trim(),excerpt:$("excerpt").value.trim(),content:$("content").value,sources:$("sources").value,notes:$("notes").value,references:$("references").value};
+ if(!obj.title){alert("Judul wajib diisi.");return}
+ const i=articles.findIndex(x=>x.id===obj.id);
+ if(i>=0)articles[i]=obj;else articles.push(obj);
+ localStorage.setItem(KEY,JSON.stringify(articles));$("id").value=obj.id;render();alert("Artikel tersimpan di browser ini.");
+};
+window.editArticle=function(i){
+ const x=articles[i];["id","title","category","date","author","cover","tags","excerpt","content","sources","notes","references"].forEach(k=>{if($(k))$(k).value=x[k]||""});
+ window.scrollTo({top:0,behavior:"smooth"});
+};
+window.deleteArticle=function(){
+ if(!$("id").value)return alert("Pilih artikel terlebih dahulu.");
+ if(confirm("Hapus artikel ini?")){articles=articles.filter(x=>x.id!==$("id").value);localStorage.setItem(KEY,JSON.stringify(articles));newArticle();render();}
+};
+window.previewArticle=function(){
+ if(!$("id").value)saveArticle();
+ if($("id").value)window.open("article.html?id="+encodeURIComponent($("id").value),"_blank");
+};
+window.exportJSON=function(){
+ const blob=new Blob([JSON.stringify(articles,null,2)],{type:"application/json"}),a=document.createElement("a");
+ a.href=URL.createObjectURL(blob);a.download="sws-articles.json";a.click();URL.revokeObjectURL(a.href);
+};
+function render(){
+ $("total").textContent=articles.length;
+ $("batahanCount").textContent=articles.filter(x=>x.category==="Sejarah Batahan").length;
+ $("westCount").textContent=articles.filter(x=>x.category==="Sejarah Pantai Barat").length;
+ $("list").innerHTML=articles.slice().reverse().map((x,j)=>{
+   const i=articles.length-1-j;
+   return `<div class="item"><h3>${escapeHtml(x.title)}</h3><span class="badge">${escapeHtml(x.category)}</span>${x.tags?x.tags.split(",").map(t=>`<span class="badge">${escapeHtml(t.trim())}</span>`).join(""):""}<div class="muted">${escapeHtml(x.date||"")} · ${escapeHtml(x.author||"")}</div><br><button onclick="editArticle(${i})">Edit</button></div>`;
+ }).join("")||"<p class='muted'>Belum ada artikel.</p>";
 }
-function show(){document.getElementById('loginBox').style.display='none';document.getElementById('desk').style.display='block';who.textContent='Administrator';render();newArticle()}
-function logout(){sessionStorage.removeItem('sws');location.reload()}
-function newArticle(){id.value='';title.value='';category.value='Sejarah Batahan';date.value=new Date().toISOString().slice(0,10);author.value="Sumatra's Westkust Society";cover.value='';tags.value='';excerpt.value='';content.value='';sources.value='';notes.value='';references.value=''}
-function save(){const obj={id:id.value||Date.now().toString(),title:title.value.trim(),category:category.value,date:date.value,author:author.value.trim(),cover:cover.value.trim(),tags:tags.value.trim(),excerpt:excerpt.value.trim(),content:content.value,sources:sources.value,notes:notes.value,references:references.value};if(!obj.title)return alert('Judul wajib diisi.');const i=A.findIndex(x=>x.id===obj.id);if(i>=0)A[i]=obj;else A.push(obj);localStorage.setItem(KEY,JSON.stringify(A));id.value=obj.id;render();alert('Artikel tersimpan.')}
-function edit(i){const x=A[i];['id','title','category','date','author','cover','tags','excerpt','content','sources','notes','references'].forEach(k=>{if(document.getElementById(k))document.getElementById(k).value=x[k]||''});scrollTo(0,0)}
-function del(){if(!id.value)return;if(confirm('Hapus artikel ini?')){A=A.filter(x=>x.id!==id.value);localStorage.setItem(KEY,JSON.stringify(A));newArticle();render()}}
-function render(){list.innerHTML=A.slice().reverse().map((x,j)=>{const i=A.length-1-j;return `<div class="item"><h3>${x.title}</h3><span class="badge">${x.category}</span> ${x.tags?x.tags.split(',').map(t=>`<span class="badge">${t.trim()}</span>`).join(''):''}<br><small>${x.date||''}</small><br><button onclick="edit(${i})">Edit</button></div>`}).join('')||'<p>Belum ada artikel.</p>'}
-function preview(){save();setTimeout(()=>location.href='article.html?id='+encodeURIComponent(id.value),100)}
-function exportJSON(){const blob=new Blob([JSON.stringify(A,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='sws-articles.json';a.click()}
-if(sessionStorage.sws==='1')show();
-</script></body></html>
+function escapeHtml(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+if(sessionStorage.getItem("sws_authenticated")==="1"){
+ $("loginScreen").style.display="none";$("desk").style.display="block";render();newArticle();
+}
+})();
+</script>
+</body></html>
