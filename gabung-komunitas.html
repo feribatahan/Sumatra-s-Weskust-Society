@@ -412,38 +412,38 @@ form.addEventListener("submit", async function(e){
   status.textContent = "";
 
 
-  const member = {
+const member = {
 
-    name:
-      document.getElementById("name").value.trim(),
+  name:
+    document.getElementById("name").value.trim(),
 
-    phone:
-      document.getElementById("phone").value.trim(),
+  phone:
+    document.getElementById("phone").value.trim(),
 
-    email:
-      document.getElementById("email").value.trim() || null,
+  email:
+    document.getElementById("email").value.trim() || null,
 
-    domicile:
-      document.getElementById("domicile").value.trim() || null,
+  domicile:
+    document.getElementById("domicile").value.trim() || null,
 
-    origin:
-      document.getElementById("origin").value.trim() || null,
+  origin:
+    document.getElementById("origin").value.trim() || null,
 
-    interest:
-      document.getElementById("interest").value || null,
+  interest:
+    document.getElementById("interest").value || null,
 
-    motivation:
-      document.getElementById("motivation").value.trim() || null
+  motivation:
+    document.getElementById("motivation").value.trim() || null,
 
-  };
+  status: "pending"
+
+};
 
 
-  const { data, error } =
-    await supabaseClient
-      .from("members")
-      .insert([member])
-      .select()
-      .single();
+const { error } =
+  await supabaseClient
+    .from("members")
+    .insert([member]);
 
 
   if(error){
