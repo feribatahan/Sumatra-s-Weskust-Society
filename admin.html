@@ -1,8 +1,8 @@
 <!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Ruang Redaksi — Westkust Society</title><style>
 *{box-sizing:border-box}body{margin:0;background:#eef1f3;color:#17212b;font:14px Arial}.top{background:#16212b;color:#fff;padding:18px 4%;display:flex;justify-content:space-between}.wrap{max-width:1250px;margin:auto;padding:30px 4%}.panel{background:#fff;border:1px solid #d7dde1;border-radius:10px;padding:22px;margin-bottom:20px}input,select,textarea{width:100%;padding:11px;margin:6px 0 14px;border:1px solid #ccd3d8;border-radius:6px;font:14px Arial}textarea{min-height:160px}button{background:#8d3f25;color:#fff;border:0;padding:11px 17px;border-radius:6px;cursor:pointer;margin-right:7px}.secondary{background:#59636c}.danger{background:#a12626}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.row{display:grid;grid-template-columns:1fr 1fr;gap:15px}.item{padding:15px 0;border-bottom:1px solid #e1e5e8}.item h3{margin:0 0 5px}.hint{font-size:12px;color:#66717c}.badge{display:inline-block;padding:4px 7px;border-radius:99px;background:#f0e8df;color:#8d3f25;font-size:11px;margin:2px}@media(max-width:700px){.row{grid-template-columns:1fr}}</style></head><body>
-<div class="top"><b>RUANG REDAKSI · V4</b><span id="who"></span></div><main class="wrap">
-<section id="login" class="panel" style="max-width:420px;margin:50px auto"><h2>Masuk</h2><input id="u" placeholder="Username"><input id="pw" type="password" placeholder="Password"><button onclick="login()">Masuk</button><p id="err"></p></section>
+<div class="top"><b>RUANG REDAKSI · V9</b><span id="who"></span></div><main class="wrap">
+<section id="loginBox" class="panel" style="max-width:420px;margin:50px auto"><h2>Masuk</h2><input id="u" placeholder="Username"><input id="pw" type="password" placeholder="Password"><p class="hint">Demo login: <b>admin</b> / <b>westkust2026</b></p><button type="button" onclick="doLogin()">Masuk</button><p id="err"></p></section>
 <div id="desk" style="display:none">
 <section class="panel"><div class="toolbar"><button onclick="newArticle()">+ Artikel Baru</button><button class="secondary" onclick="exportJSON()">Export JSON</button><button class="secondary" onclick="location.href='index.html'">Lihat Situs</button><button class="secondary" onclick="logout()">Keluar</button></div></section>
 <section class="panel"><h2>Editor Artikel</h2><input type="hidden" id="id">
@@ -22,9 +22,18 @@
 </div></main>
 <script>
 const KEY='sws_articles',USER='admin',PASS='westkust2026';let A=JSON.parse(localStorage.getItem(KEY)||'[]');
-function login(){if(u.value===USER&&pw.value===PASS){sessionStorage.sws=1;show()}else err.textContent='Username atau password salah.'}
-function show(){login.style.display='none';desk.style.display='block';who.textContent='Administrator';render();newArticle()}
-function logout(){sessionStorage.clear();location.reload()}
+function doLogin(){
+  const username=document.getElementById('u').value.trim();
+  const password=document.getElementById('pw').value;
+  if(username===USER && password===PASS){
+    sessionStorage.setItem('sws','1');
+    show();
+  }else{
+    document.getElementById('err').textContent='Username atau password salah.';
+  }
+}
+function show(){document.getElementById('loginBox').style.display='none';document.getElementById('desk').style.display='block';who.textContent='Administrator';render();newArticle()}
+function logout(){sessionStorage.removeItem('sws');location.reload()}
 function newArticle(){id.value='';title.value='';category.value='Sejarah Batahan';date.value=new Date().toISOString().slice(0,10);author.value="Sumatra's Westkust Society";cover.value='';tags.value='';excerpt.value='';content.value='';sources.value='';notes.value='';references.value=''}
 function save(){const obj={id:id.value||Date.now().toString(),title:title.value.trim(),category:category.value,date:date.value,author:author.value.trim(),cover:cover.value.trim(),tags:tags.value.trim(),excerpt:excerpt.value.trim(),content:content.value,sources:sources.value,notes:notes.value,references:references.value};if(!obj.title)return alert('Judul wajib diisi.');const i=A.findIndex(x=>x.id===obj.id);if(i>=0)A[i]=obj;else A.push(obj);localStorage.setItem(KEY,JSON.stringify(A));id.value=obj.id;render();alert('Artikel tersimpan.')}
 function edit(i){const x=A[i];['id','title','category','date','author','cover','tags','excerpt','content','sources','notes','references'].forEach(k=>{if(document.getElementById(k))document.getElementById(k).value=x[k]||''});scrollTo(0,0)}
