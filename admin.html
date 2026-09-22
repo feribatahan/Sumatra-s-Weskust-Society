@@ -15,7 +15,7 @@
 label{display:block;font-weight:700;margin:14px 0 7px}input,select,textarea{width:100%;padding:12px;border:1px solid #cbd3d9;border-radius:7px;background:#fff;font:14px Arial}textarea{min-height:160px;resize:vertical}
 .password-row{display:flex;gap:8px}.password-row input{flex:1}.showbtn{background:#eef1f3!important;color:#17212b!important;border:1px solid #cbd3d9!important;margin:0!important}
 button{border:0;border-radius:7px;padding:11px 16px;background:#8d3f25;color:#fff;cursor:pointer;font-weight:700}button:hover{opacity:.92}
-.login-button{width:100%;margin-top:20px;font-size:15px}.hint{font-size:12px;color:#66717c;margin-top:18px}.demo{background:#f7f3ea;border:1px solid #ddd4c5;border-radius:8px;padding:12px;margin-top:18px;font-family:monospace}
+.login-button{width:100%;margin-top:20px;font-size:15px}.home-button{width:100%;margin-top:10px;background:#fff;color:#8d3f25;border:1px solid #c9a28f}.hint{font-size:12px;color:#66717c;margin-top:18px}.demo{background:#f7f3ea;border:1px solid #ddd4c5;border-radius:8px;padding:12px;margin-top:18px;font-family:monospace}
 .error{color:#a12626;margin:12px 0 0;min-height:18px}.success{color:#256d3c}
 #desk{display:none}.dash-head{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:20px}.dash-head h1{margin:0;font-size:28px}.actions{display:flex;gap:8px;flex-wrap:wrap}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-bottom:20px}.stat{background:#fff;border:1px solid #d7dde1;border-radius:10px;padding:18px}.stat b{font-size:27px;display:block;margin-top:5px}.stat span{font-size:12px;color:#66717c}
@@ -37,7 +37,7 @@ button{border:0;border-radius:7px;padding:11px 16px;background:#8d3f25;color:#ff
 <label for="password">Password</label>
 <div class="password-row"><input id="password" type="password" autocomplete="current-password"><button class="showbtn" type="button" onclick="togglePassword()">Tampilkan</button></div>
 <div id="loginError" class="error"></div>
-<button class="login-button" type="button" onclick="handleLogin()">Masuk ke Ruang Redaksi</button>
+<button class="login-button" type="button" onclick="handleLogin()">Masuk ke Ruang Redaksi</button><button class="home-button" type="button" onclick="location.href='index.html'">← Kembali ke Beranda</button>
 <div class="demo"><b>Login demo</b><br>Username: admin<br>Password: westkust2026</div>
 <div class="hint">Tip: jika GitHub Pages menampilkan versi lama, gunakan Ctrl + F5.</div>
 </div>
