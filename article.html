@@ -72,9 +72,9 @@ async function load(){
    const {data,error}=await supabaseClient.from('articles').select('id,title,slug,excerpt,content,category,author,cover_image,status,published_at,created_at,featured').eq('slug',slug).eq('status','published').maybeSingle();
    if(error)throw error;
    if(!data){setState('Artikel tidak ditemukan atau belum dipublikasikan.',true);return;}
-   document.title=data.title+' — Sumatra\\'s Westkust Society';
+   document.title=data.title+' — Sumatra\'s Westkust Society';
    document.getElementById('title').textContent=data.title;
-   document.getElementById('meta').innerHTML=(data.category?'<strong>'+esc(data.category)+'</strong> · ':'')+esc(data.author||'Sumatra\\'s Westkust Society')+' · '+fmt(data.published_at||data.created_at);
+   document.getElementById('meta').innerHTML=(data.category?'<strong>'+esc(data.category)+'</strong> · ':'')+esc(data.author||'Sumatra\'s Westkust Society')+' · '+fmt(data.published_at||data.created_at);
    const ex=document.getElementById('excerpt');if(data.excerpt){ex.textContent=data.excerpt;ex.hidden=false;}else ex.hidden=true;
    const cover=document.getElementById('cover');if(data.cover_image){cover.src=data.cover_image;cover.alt=data.title;cover.hidden=false;}else cover.hidden=true;
    document.getElementById('content').innerHTML=data.content||'';
