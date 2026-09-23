@@ -1,5 +1,6 @@
-SWS Hero V1
+SWS HERO V2
 
-Upload index.html as the site's index.html.
-Upload assets/westkust-map-hero.jpg to the repository's assets/ folder.
-The hero uses the original antique map supplied in the conversation.
+Upload index.html -> replace the current index.html.
+Upload assets/westkust-map-hero.jpg -> create/replace assets/westkust-map-hero.jpg.
+The Hero is now full browser width (full bleed) and uses the original supplied map.
+Do not change admin.html or article.html.
