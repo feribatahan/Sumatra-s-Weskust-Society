@@ -1,12 +1,10 @@
-SWS HERO V3
+SWS HERO V4
 
-Hero final direction:
-- One navigation only: header navigation.
-- No duplicate navigation links inside Hero.
-- Original supplied antique map as Hero background.
-- Full-bleed Hero.
-- Do not change admin.html, article.html, or Supabase.
+Changes from V3:
+- Hero full-bleed fixed with position/left/translate-equivalent sizing.
+- Original map reframed toward the left (30% desktop, 38% mobile).
+- Left overlay slightly strengthened for typography.
+- No duplicate navigation in Hero.
 
-Upload:
-1) index.html -> replace repository root index.html
-2) assets/westkust-map-hero.jpg -> repository assets/westkust-map-hero.jpg
+Upload index.html to repository root and assets/westkust-map-hero.jpg to assets/.
+Do not change admin.html or article.html.
