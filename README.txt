@@ -1,10 +1,8 @@
-SWS HERO V4
+SWS HERO V5
 
-Changes from V3:
-- Hero full-bleed fixed with position/left/translate-equivalent sizing.
-- Original map reframed toward the left (30% desktop, 38% mobile).
-- Left overlay slightly strengthened for typography.
-- No duplicate navigation in Hero.
+Fixes V4's full-bleed positioning. The hero now starts at the viewport's left edge.
+The original antique map remains unchanged.
+No duplicate navigation in Hero.
 
-Upload index.html to repository root and assets/westkust-map-hero.jpg to assets/.
+Upload index.html to repository root. The existing assets/westkust-map-hero.jpg can remain.
 Do not change admin.html or article.html.

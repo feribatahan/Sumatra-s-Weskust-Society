@@ -30,9 +30,8 @@ nav a:hover{color:#f0c5ae}
 main{max-width:var(--max);margin:0 auto;padding:68px 18px 80px}
 .hero-fullbleed{
   position:relative;
-  left:50%;
   width:100vw;
-  margin-left:-50vw;
+  margin-left:calc((100vw - var(--max)) / -2);
   margin-right:0;
 }
 .hero{
@@ -92,6 +91,7 @@ footer{background:var(--navy);color:#cbd2d7;padding:26px 18px 35px;font-family:A
   .latest-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:600px){
+  .hero-fullbleed{margin-left:-18px}
   header{padding:16px 18px 20px}
   nav{gap:15px}
   nav a{font-size:14px}
