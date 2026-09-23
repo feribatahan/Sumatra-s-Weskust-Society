@@ -15,7 +15,7 @@ header{background:var(--navy);color:#fff;padding:18px 5%;display:flex;align-item
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px}.stat span{display:block;color:var(--muted);font-size:14px;margin-bottom:8px}.stat strong{font-size:32px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:24px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.full{grid-column:1/-1}
 label{display:block;font-weight:700;margin-bottom:7px}input,select,textarea{width:100%;padding:12px 13px;border:1px solid #cbd3da;border-radius:8px;background:#fff;font:inherit;color:var(--ink)}.help{font-size:12px;color:var(--muted);margin-top:5px}.check{display:flex;align-items:center;gap:8px;font-weight:700}.check input{width:auto}
-.editor-shell{border:1px solid #cbd3da;border-radius:9px;background:#fff;overflow:hidden}.toolbar{display:flex;gap:5px;flex-wrap:wrap;padding:8px;background:#f2f3f4;border-bottom:1px solid #d7dce0;align-items:center}.toolbar button,.toolbar select{height:36px;padding:6px 9px;border:1px solid #cbd3da;border-radius:6px;background:#fff;color:#17212b;font-weight:700}.toolbar button:hover{background:#eee}.toolbar .sep{width:1px;height:26px;background:#cbd3da;margin:0 3px}.toolbar input[type=color]{width:38px;height:36px;padding:3px}.editor{min-height:380px;padding:18px;outline:none;line-height:1.75;font-family:Georgia,serif;font-size:18px}.editor:empty:before{content:attr(data-placeholder);color:#9aa3aa}.editor img{max-width:100%;height:auto;border-radius:7px;display:block;margin:14px 0}.editor.dragover{background:#f6faf8;outline:3px dashed #2f8b62;outline-offset:-8px}
+.editor-shell{border:1px solid #cbd3da;border-radius:9px;background:#fff;overflow:hidden}.toolbar{display:flex;gap:5px;flex-wrap:wrap;padding:8px;background:#f2f3f4;border-bottom:1px solid #d7dce0;align-items:center}.toolbar button,.toolbar select{height:36px;padding:6px 9px;border:1px solid #cbd3da;border-radius:6px;background:#fff;color:#17212b;font-weight:700}.toolbar button:hover{background:#eee}.toolbar .sep{width:1px;height:26px;background:#cbd3da;margin:0 3px}.toolbar input[type=color]{width:38px;height:36px;padding:3px}.editor{min-height:380px;padding:18px;outline:none;line-height:1.75;font-family:Georgia,serif;font-size:18px}.editor:empty:before{content:attr(data-placeholder);color:#9aa3aa}.editor img{max-width:100%;height:auto;border-radius:7px;display:block;margin:14px 0;cursor:pointer}.editor img.image-selected{outline:3px solid #934226;outline-offset:3px}.editor figure.editor-figure{margin:14px 0;max-width:100%;padding:0}.editor figure.editor-figure figcaption{font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.45;color:#68747f;text-align:center;margin-top:7px}.editor figure.editor-figure.image-left{float:left;margin:8px 24px 14px 0}.editor figure.editor-figure.image-right{float:right;margin:8px 0 14px 24px}.editor figure.editor-figure.image-center{float:none;margin-left:auto;margin-right:auto}.editor figure.editor-figure.image-left figcaption,.editor figure.editor-figure.image-right figcaption{max-width:100%}.editor.dragover{background:#f6faf8;outline:3px dashed #2f8b62;outline-offset:-8px}
 .coverbox{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.cover-preview{width:180px;height:110px;border:1px dashed #b8c0c6;border-radius:8px;object-fit:cover;background:#f5f6f7;display:none}.cover-preview.show{display:block}.filebtn{display:inline-block;padding:11px 16px;border-radius:8px;background:#5d6872;color:#fff;font-weight:700;cursor:pointer}.filebtn input{display:none}
 .editor-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.uploading{opacity:.65;pointer-events:none}
 .tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:900px}th,td{text-align:left;padding:13px 10px;border-bottom:1px solid #e2e0da;vertical-align:top}th{font-size:12px;color:#607080;text-transform:uppercase}td{font-size:14px}.badge{display:inline-block;padding:5px 9px;border-radius:999px;font-size:12px;font-weight:800}.draft{background:#fff0c2;color:#785700}.published{background:#dff5e8;color:#12643e}.archived{background:#e6e8eb;color:#4b5560}.rowactions{display:flex;gap:6px;flex-wrap:wrap}.rowactions button{padding:7px 10px;font-size:12px}
@@ -64,7 +64,7 @@ label{display:block;font-weight:700;margin-bottom:7px}input,select,textarea{widt
 <select id="fontSize"><option value="3">Normal</option><option value="2">Kecil</option><option value="4">Besar</option><option value="5">Sangat besar</option><option value="6">Judul besar</option></select>
 <span class="sep"></span><button type="button" data-cmd="bold"><b>B</b></button><button type="button" data-cmd="italic"><i>I</i></button><button type="button" data-cmd="underline"><u>U</u></button><button type="button" data-cmd="strikeThrough"><s>S</s></button>
 <span class="sep"></span><button type="button" data-cmd="justifyLeft">≡←</button><button type="button" data-cmd="justifyCenter">≡</button><button type="button" data-cmd="justifyRight">→≡</button><button type="button" data-cmd="justifyFull">☰</button>
-<span class="sep"></span><button type="button" data-cmd="insertUnorderedList">• List</button><button type="button" data-cmd="insertOrderedList">1. List</button><button type="button" id="linkBtn">🔗</button><button type="button" id="imageBtn">🖼️ Gambar</button><button type="button" id="clearBtn">Tx</button>
+<span class="sep"></span><button type="button" data-cmd="insertUnorderedList">• List</button><button type="button" data-cmd="insertOrderedList">1. List</button><button type="button" id="linkBtn">🔗</button><button type="button" id="imageBtn">🖼️ Gambar</button><button type="button" id="imageSettingsBtn">⚙️ Atur Gambar</button><button type="button" id="clearBtn">Tx</button>
 <label title="Warna huruf" style="margin:0;display:flex;align-items:center;gap:4px">A <input id="textColor" type="color" value="#17212b"></label>
 <input id="inlineImageFile" type="file" accept="image/*" hidden>
 </div>
@@ -85,6 +85,7 @@ label{display:block;font-weight:700;margin-bottom:7px}input,select,textarea{widt
 
 <section class="card"><h2>Anggota Komunitas</h2><div class="toolbar"><input id="memberSearch" placeholder="Cari nama, email, asal, domisili..." style="flex:1;min-width:220px"><select id="memberFilter"><option value="all">Semua status</option><option value="pending">Pending</option><option value="approved">Approved</option><option value="rejected">Rejected</option></select><button id="memberRefreshBtn" class="btn">↻ Refresh</button><button id="exportMembersBtn" class="secondary">Export CSV</button></div><div class="tablewrap"><table><thead><tr><th>Nama</th><th>Kontak</th><th>Domisili / Asal</th><th>Minat</th><th>Status</th><th>Daftar</th><th>Action</th></tr></thead><tbody id="memberRows"><tr><td colspan="7">Memuat...</td></tr></tbody></table></div></section>
 </main></div>
+<div id="imageSettingsModal" class="modal"><div class="modalbox" style="max-width:620px"><div class="actions" style="justify-content:space-between;align-items:center"><div><h2 style="margin:0">Pengaturan Gambar</h2><div class="help">Atur ukuran, posisi, aliran teks, dan caption.</div></div><button id="closeImageSettings" class="secondary">Tutup</button></div><div style="display:grid;gap:16px;margin-top:22px"><div><label for="imageSize">Ukuran Gambar</label><select id="imageSize"><option value="small">Kecil — 40%</option><option value="medium" selected>Sedang — 65%</option><option value="large">Besar — 85%</option><option value="original">Original — ukuran asli</option></select></div><div><label for="imagePosition">Posisi Gambar</label><select id="imagePosition"><option value="left">Kiri — teks mengalir di kanan</option><option value="center" selected>Tengah — teks di atas & bawah</option><option value="right">Kanan — teks mengalir di kiri</option></select></div><div><label for="imageCaption">Caption / Keterangan Gambar</label><textarea id="imageCaption" rows="3" placeholder="Contoh: Peta Sumatra's Westkust, koleksi Universiteitsbibliotheek Vrije Universiteit Amsterdam."></textarea></div><label class="check"><input id="showImageCaption" type="checkbox"> Tampilkan caption</label><div id="imageSettingPreview" style="background:#f3f1eb;border:1px solid #ddd4c5;border-radius:10px;padding:12px;text-align:center"><span class="help">Pilih gambar untuk melihat preview.</span></div><div class="actions" style="justify-content:flex-end"><button id="removeImageSettings" class="danger">Hapus Gambar</button><button id="saveImageSettings" class="primary">Simpan Pengaturan</button></div></div></div></div>
 <div id="previewModal" class="modal"><div class="modalbox"><div class="actions" style="justify-content:flex-end"><button id="closePreview" class="secondary">Tutup</button></div><article id="previewBody" class="preview"></article></div></div>
 
 <script>
@@ -105,7 +106,7 @@ function renderMembers(){const q=(document.getElementById('memberSearch')?.value
 window.setMemberStatus=async(id,status)=>{const {error}=await supabaseClient.from('members').update({status}).eq('id',id);if(error){show('appMsg','Gagal mengubah status anggota: '+error.message,'err');return;}show('appMsg','Status anggota berhasil diubah menjadi '+status+'.','ok');await loadMembers();};
 window.deleteMember=async(id)=>{const m=members.find(x=>x.id===id);if(!m||!confirm('Hapus anggota "'+m.name+'" secara permanen?'))return;const {error}=await supabaseClient.from('members').delete().eq('id',id);if(error){show('appMsg','Gagal menghapus anggota: '+error.message,'err');return;}show('appMsg','Anggota berhasil dihapus.','ok');await loadMembers();};
 function exportMembers(){const headers=['Nama','Phone','Email','Domisili','Asal','Minat','Motivasi','Status','Tanggal Daftar'];const rows=members.map(m=>[m.name,m.phone,m.email,m.domicile,m.origin,m.interest,m.motivation,m.status,m.created_at]);const csv=[headers,...rows].map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n');const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='anggota-sumatra-westkust-'+new Date().toISOString().slice(0,10)+'.csv';a.click();URL.revokeObjectURL(a.href);}
-function resetEditor(){editingId=null;coverImageUrl=null;document.getElementById('editorTitle').textContent='Editor Artikel';['title','slug','cover'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});document.getElementById('excerpt').value='';document.getElementById('editor').innerHTML='';document.getElementById('author').value="Sumatra's Westkust Society";document.getElementById('category').value='';document.getElementById('status').value='draft';document.getElementById('featured').checked=false;document.getElementById('coverPreview').classList.remove('show');document.getElementById('coverPreview').src='';document.getElementById('coverStatus').textContent='Belum ada cover.';clearMsg('appMsg');window.scrollTo({top:document.getElementById('editorCard').offsetTop-20,behavior:'smooth'});}
+function resetEditor(){if(selectedImage)selectedImage.classList.remove('image-selected');selectedImage=null;imageSettingsModal?.classList.remove('show');editingId=null;coverImageUrl=null;document.getElementById('editorTitle').textContent='Editor Artikel';['title','slug','cover'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});document.getElementById('excerpt').value='';document.getElementById('editor').innerHTML='';document.getElementById('author').value="Sumatra's Westkust Society";document.getElementById('category').value='';document.getElementById('status').value='draft';document.getElementById('featured').checked=false;document.getElementById('coverPreview').classList.remove('show');document.getElementById('coverPreview').src='';document.getElementById('coverStatus').textContent='Belum ada cover.';clearMsg('appMsg');window.scrollTo({top:document.getElementById('editorCard').offsetTop-20,behavior:'smooth'});}
 function fill(a){editingId=a.id;coverImageUrl=a.cover_image||null;document.getElementById('editorTitle').textContent='Edit Artikel #'+a.id;document.getElementById('title').value=a.title||'';document.getElementById('slug').value=a.slug||'';document.getElementById('excerpt').value=a.excerpt||'';document.getElementById('editor').innerHTML=a.content||'';document.getElementById('author').value=a.author||"Sumatra's Westkust Society";document.getElementById('category').value=a.category||'';document.getElementById('status').value=a.status||'draft';document.getElementById('featured').checked=!!a.featured;const cp=document.getElementById('coverPreview');if(coverImageUrl){cp.src=coverImageUrl;cp.classList.add('show');document.getElementById('coverStatus').textContent='Cover tersimpan.';}else{cp.classList.remove('show');document.getElementById('coverStatus').textContent='Belum ada cover.';}window.scrollTo({top:document.getElementById('editorCard').offsetTop-20,behavior:'smooth'});}
 window.editArticle=id=>{const a=articles.find(x=>x.id===id);if(a)fill(a);};
 function payload(forceStatus){const title=document.getElementById('title').value.trim(),slug=document.getElementById('slug').value.trim()||slugify(title),status=forceStatus||document.getElementById('status').value;return{title,slug,excerpt:document.getElementById('excerpt').value.trim()||null,content:document.getElementById('editor').innerHTML.trim(),category:document.getElementById('category').value||null,author:document.getElementById('author').value.trim()||"Sumatra's Westkust Society",cover_image:coverImageUrl||null,status,featured:document.getElementById('featured').checked,updated_at:new Date().toISOString(),published_at:status==='published'?new Date().toISOString():null};}
@@ -117,12 +118,133 @@ function exec(cmd,val=null){document.getElementById('editor').focus();document.e
 document.querySelectorAll('[data-cmd]').forEach(b=>b.addEventListener('click',()=>exec(b.dataset.cmd)));
 document.getElementById('blockFormat').onchange=e=>exec('formatBlock',e.target.value);document.getElementById('fontSize').onchange=e=>exec('fontSize',e.target.value);document.getElementById('textColor').oninput=e=>exec('foreColor',e.target.value);
 document.getElementById('linkBtn').onclick=()=>{const url=prompt('Masukkan URL link:','https://');if(url)exec('createLink',url);};document.getElementById('clearBtn').onclick=()=>exec('removeFormat');
+
+let selectedImage=null;
+const imageSettingsModal=document.getElementById('imageSettingsModal');
+const imageSize=document.getElementById('imageSize');
+const imagePosition=document.getElementById('imagePosition');
+const imageCaption=document.getElementById('imageCaption');
+const showImageCaption=document.getElementById('showImageCaption');
+const imageSettingPreview=document.getElementById('imageSettingPreview');
+
+function getImageFigure(img){
+  if(!img)return null;
+  return img.closest('figure.editor-figure') || img.closest('figure');
+}
+function ensureImageFigure(img){
+  let fig=getImageFigure(img);
+  if(fig)return fig;
+  fig=document.createElement('figure');
+  fig.className='editor-figure image-center';
+  const parent=img.parentNode;
+  parent.insertBefore(fig,img);
+  fig.appendChild(img);
+  return fig;
+}
+function clearImageClasses(fig){
+  if(!fig)return;
+  fig.classList.remove('image-left','image-center','image-right');
+}
+function applyImageSettings(img,size,position,caption,showCaption){
+  const fig=ensureImageFigure(img);
+  clearImageClasses(fig);
+  fig.classList.add('image-'+position);
+  fig.style.width='';
+  fig.style.maxWidth='100%';
+  fig.style.boxSizing='border-box';
+  img.style.display='block';
+  img.style.height='auto';
+  img.style.maxWidth='100%';
+  img.style.margin='14px auto';
+  img.style.float='none';
+  img.style.width='';
+  if(size==='small')img.style.width='40%';
+  if(size==='medium')img.style.width='65%';
+  if(size==='large')img.style.width='85%';
+  if(size==='original')img.style.width='auto';
+  if(position==='left'){fig.style.float='left';img.style.margin='8px 24px 14px 0';}
+  else if(position==='right'){fig.style.float='right';img.style.margin='8px 0 14px 24px';}
+  else{fig.style.float='none';img.style.margin='14px auto';}
+  let cap=fig.querySelector('figcaption');
+  if(showCaption && caption.trim()){
+    if(!cap){cap=document.createElement('figcaption');fig.appendChild(cap);}
+    cap.textContent=caption.trim();
+  }else if(cap){cap.remove();}
+  fig.dataset.imageSize=size;
+  fig.dataset.imagePosition=position;
+  fig.dataset.imageCaption=caption.trim();
+  fig.dataset.showCaption=showCaption?'true':'false';
+}
+function openImageSettings(img){
+  selectedImage=img;
+  img.classList.add('image-selected');
+  const fig=getImageFigure(img);
+  imageSize.value=fig?.dataset.imageSize || inferImageSize(img);
+  imagePosition.value=fig?.dataset.imagePosition || inferImagePosition(fig,img);
+  const cap=fig?.querySelector('figcaption');
+  imageCaption.value=fig?.dataset.imageCaption || (cap?.textContent || '');
+  showImageCaption.checked=!!cap || fig?.dataset.showCaption==='true';
+  updateImageSettingPreview();
+  imageSettingsModal.classList.add('show');
+}
+function inferImageSize(img){
+  const w=img.style.width;
+  if(w==='40%')return 'small'; if(w==='65%')return 'medium'; if(w==='85%')return 'large'; return 'original';
+}
+function inferImagePosition(fig,img){
+  if(fig?.classList.contains('image-left') || img.style.float==='left')return 'left';
+  if(fig?.classList.contains('image-right') || img.style.float==='right')return 'right';
+  return 'center';
+}
+function updateImageSettingPreview(){
+  if(!selectedImage){imageSettingPreview.innerHTML='<span class="help">Pilih gambar untuk melihat preview.</span>';return;}
+  const clone=selectedImage.cloneNode(true);
+  clone.classList.remove('image-selected');
+  clone.style.pointerEvents='none';
+  clone.style.maxWidth='100%';
+  const wrap=document.createElement('div');
+  wrap.style.textAlign=imagePosition.value==='left'?'left':imagePosition.value==='right'?'right':'center';
+  clone.style.width=imageSize.value==='small'?'40%':imageSize.value==='medium'?'65%':imageSize.value==='large'?'85%':'auto';
+  clone.style.margin=imagePosition.value==='left'?'0 12px 6px 0':imagePosition.value==='right'?'0 0 6px 12px':'0 auto';
+  wrap.appendChild(clone);
+  imageSettingPreview.innerHTML=''; imageSettingPreview.appendChild(wrap);
+}
+function closeImageSettings(){
+  if(selectedImage)selectedImage.classList.remove('image-selected');
+  selectedImage=null; imageSettingsModal.classList.remove('show');
+}
+document.getElementById('imageSettingsBtn').onclick=()=>{
+  if(selectedImage){openImageSettings(selectedImage);return;}
+  const img=document.querySelector('#editor img.image-selected');
+  if(img){openImageSettings(img);return;}
+  show('appMsg','Klik gambar di dalam artikel terlebih dahulu, lalu pilih Atur Gambar.','err');
+};
+document.getElementById('saveImageSettings').onclick=()=>{
+  if(!selectedImage)return;
+  applyImageSettings(selectedImage,imageSize.value,imagePosition.value,imageCaption.value,showImageCaption.checked);
+  selectedImage.classList.remove('image-selected');
+  selectedImage=null; imageSettingsModal.classList.remove('show');
+  show('appMsg','Pengaturan gambar berhasil disimpan.','ok');
+};
+document.getElementById('closeImageSettings').onclick=closeImageSettings;
+document.getElementById('imageSettingsModal').onclick=e=>{if(e.target.id==='imageSettingsModal')closeImageSettings();};
+document.getElementById('removeImageSettings').onclick=()=>{
+  if(!selectedImage)return;
+  if(!confirm('Hapus gambar ini dari artikel?'))return;
+  const fig=getImageFigure(selectedImage);
+  if(fig)fig.remove(); else selectedImage.remove();
+  selectedImage=null; imageSettingsModal.classList.remove('show');
+  show('appMsg','Gambar dihapus dari artikel.','ok');
+};
+[imageSize,imagePosition,showImageCaption].forEach(el=>el.addEventListener('change',updateImageSettingPreview));
+imageCaption.addEventListener('input',updateImageSettingPreview);
+
 async function uploadFile(file,kind='inline'){if(!file||!file.type.startsWith('image/')){show('appMsg','File harus berupa gambar.','err');return null;}if(file.size>10*1024*1024){show('appMsg','Ukuran gambar maksimal 10 MB.','err');return null;}const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'');const path=(kind==='cover'?'covers/':'inline/')+Date.now()+'-'+Math.random().toString(36).slice(2,9)+'.'+ext;show('appMsg','Mengupload gambar…','ok');const {error}=await supabaseClient.storage.from('article-images').upload(path,file,{cacheControl:'3600',upsert:false,contentType:file.type});if(error){show('appMsg','Upload gagal: '+error.message,'err');return null;}const {data}=supabaseClient.storage.from('article-images').getPublicUrl(path);return data.publicUrl;}
 async function uploadCover(file){const url=await uploadFile(file,'cover');if(!url)return;coverImageUrl=url;const p=document.getElementById('coverPreview');p.src=url;p.classList.add('show');document.getElementById('coverStatus').textContent='Cover berhasil diupload.';show('appMsg','Cover berhasil diupload.','ok');}
-async function uploadInline(file){const url=await uploadFile(file,'inline');if(!url)return;const ed=document.getElementById('editor');ed.focus();const sel=window.getSelection();const range=document.createRange();range.selectNodeContents(ed);range.collapse(false);if(sel){sel.removeAllRanges();sel.addRange(range);}document.execCommand('insertImage',false,url);show('appMsg','Gambar berhasil dimasukkan ke artikel.','ok');}
+async function uploadInline(file){const url=await uploadFile(file,'inline');if(!url)return;const ed=document.getElementById('editor');ed.focus();const sel=window.getSelection();const range=document.createRange();range.selectNodeContents(ed);range.collapse(false);if(sel){sel.removeAllRanges();sel.addRange(range);}document.execCommand('insertImage',false,url);const imgs=ed.querySelectorAll('img');const img=imgs[imgs.length-1];if(img){openImageSettings(img);}show('appMsg','Gambar berhasil dimasukkan ke artikel. Atur ukuran dan posisi jika diperlukan.','ok');}
 document.getElementById('coverFile').onchange=e=>uploadCover(e.target.files[0]);document.getElementById('removeCover').onclick=()=>{coverImageUrl=null;document.getElementById('coverFile').value='';document.getElementById('coverPreview').classList.remove('show');document.getElementById('coverPreview').src='';document.getElementById('coverStatus').textContent='Cover dihapus dari artikel.';};
 document.getElementById('imageBtn').onclick=()=>document.getElementById('inlineImageFile').click();document.getElementById('inlineImageFile').onchange=e=>{uploadInline(e.target.files[0]);e.target.value='';};
-const ed=document.getElementById('editor');ed.addEventListener('dragover',e=>{if([...e.dataTransfer.items].some(i=>i.type.startsWith('image/'))){e.preventDefault();ed.classList.add('dragover');}});ed.addEventListener('dragleave',()=>ed.classList.remove('dragover'));ed.addEventListener('drop',e=>{const files=[...e.dataTransfer.files].filter(f=>f.type.startsWith('image/'));if(files.length){e.preventDefault();ed.classList.remove('dragover');uploadInline(files[0]);}});
+const ed=document.getElementById('editor');ed.addEventListener('click',e=>{if(e.target&&e.target.tagName==='IMG'){e.preventDefault();openImageSettings(e.target);}});ed.addEventListener('dragover',e=>{if([...e.dataTransfer.items].some(i=>i.type.startsWith('image/'))){e.preventDefault();ed.classList.add('dragover');}});ed.addEventListener('dragleave',()=>ed.classList.remove('dragover'));ed.addEventListener('drop',e=>{const files=[...e.dataTransfer.files].filter(f=>f.type.startsWith('image/'));if(files.length){e.preventDefault();ed.classList.remove('dragover');uploadInline(files[0]);}});
 document.getElementById('memberRefreshBtn').onclick=loadMembers;document.getElementById('memberSearch').oninput=renderMembers;document.getElementById('memberFilter').onchange=renderMembers;document.getElementById('exportMembersBtn').onclick=exportMembers;document.getElementById('loginBtn').onclick=login;document.getElementById('logoutBtn').onclick=async()=>{await supabaseClient.auth.signOut();location.reload();};document.getElementById('newBtn').onclick=resetEditor;document.getElementById('cancelBtn').onclick=resetEditor;document.getElementById('saveBtn').onclick=()=>save('draft');document.getElementById('publishBtn').onclick=()=>save('published');document.getElementById('previewBtn').onclick=()=>{const p=payload();if(!p.title||!p.content||p.content==='<br>'){show('appMsg','Isi judul dan artikel dulu sebelum preview.','err');return;}showPreview(p);};document.getElementById('refreshBtn').onclick=loadArticles;document.getElementById('search').oninput=render;document.getElementById('filter').onchange=render;document.getElementById('title').oninput=e=>{if(!editingId||!document.getElementById('slug').value)document.getElementById('slug').value=slugify(e.target.value);};document.getElementById('closePreview').onclick=()=>document.getElementById('previewModal').classList.remove('show');document.getElementById('previewModal').onclick=e=>{if(e.target.id==='previewModal')e.currentTarget.classList.remove('show');};
 (async()=>{try{await boot();}catch(e){show('loginMsg',e.message,'err');}})();
 </script>
