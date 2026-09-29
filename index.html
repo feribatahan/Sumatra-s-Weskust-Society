@@ -571,9 +571,11 @@ footer{background:var(--navy);color:#cbd2d7;padding:26px 18px 35px;font-family:A
     searchBtn.disabled = true;
 
     try{
-      const term = encodeURIComponent('*' + q + '*');
+      // PostgREST/Supabase membutuhkan format or=(condition1,condition2,...).
+      // Wildcard * dipakai oleh ilike untuk pencarian sebagian teks.
+      const term = '*' + q.replace(/([\\\\%])/g, '\\\\$1') + '*';
       const or = encodeURIComponent(
-        `title.ilike.${term},excerpt.ilike.${term},category.ilike.${term},author.ilike.${term}`
+        `(title.ilike.${term},excerpt.ilike.${term},category.ilike.${term},author.ilike.${term})`
       );
 
       const data = await api(
