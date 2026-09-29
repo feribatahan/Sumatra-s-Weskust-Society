@@ -85,6 +85,81 @@ main{max-width:var(--max);margin:0 auto;padding:52px 18px 80px}
 .quick{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px}
 .quick a{background:var(--navy);color:#fff;text-decoration:none;border-radius:14px;padding:22px;font-family:Arial,Helvetica,sans-serif;font-weight:700}
 .quick a span{display:block;color:#c9d0d6;font-weight:400;margin-top:6px;font-size:14px;line-height:1.45}
+
+.community{
+  margin-top:68px;
+  padding:34px;
+  background:var(--navy);
+  color:#fff;
+  border-radius:18px;
+  position:relative;
+  overflow:hidden;
+}
+.community::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(120deg,rgba(167,71,34,.18),transparent 55%);
+  pointer-events:none;
+}
+.community-inner{position:relative;z-index:1}
+.community-head{max-width:700px;margin-bottom:24px}
+.community-head h2{font-size:34px;line-height:1.15;margin:0 0 10px}
+.community-head p{margin:0;color:#d8dde2;font-size:17px;line-height:1.6}
+.social-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+.social-card{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  min-height:92px;
+  padding:18px;
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:14px;
+  color:#fff;
+  text-decoration:none;
+  background:rgba(255,255,255,.06);
+  transition:transform .2s ease,background .2s ease,border-color .2s ease;
+  font-family:Arial,Helvetica,sans-serif;
+}
+.social-card:hover{
+  transform:translateY(-2px);
+  background:rgba(255,255,255,.11);
+  border-color:rgba(255,255,255,.28);
+}
+.social-icon{
+  width:42px;
+  height:42px;
+  flex:0 0 42px;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  background:#fff;
+  color:var(--navy);
+  font-size:20px;
+  font-weight:800;
+}
+.social-card strong{display:block;font-size:16px;margin-bottom:4px}
+.social-card span{display:block;color:#c9d0d6;font-size:13px;line-height:1.35}
+.footer-social{
+  display:flex;
+  gap:16px;
+  flex-wrap:wrap;
+}
+.footer-social a{
+  color:#cbd2d7;
+  text-decoration:none;
+}
+.footer-social a:hover{color:#fff;text-decoration:underline}
+@media(max-width:600px){
+  .community{margin-top:52px;padding:25px 20px}
+  .community-head h2{font-size:29px}
+  .social-grid{grid-template-columns:1fr}
+}
+
 footer{background:var(--navy);color:#cbd2d7;padding:26px 18px 35px;font-family:Arial,Helvetica,sans-serif;font-size:13px}
 .footer-inner{max-width:var(--max);margin:auto;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 @media(max-width:850px){
@@ -176,12 +251,69 @@ footer{background:var(--navy);color:#cbd2d7;padding:26px 18px 35px;font-family:A
       <a href="category.html?cat=Nusantara">Sejarah Nusantara<span>Melihat Pantai Barat Sumatra dalam konteks sejarah Nusantara yang lebih luas.</span></a>
     </div>
   </section>
+
+  <section class="community" aria-label="Kanal komunitas Sumatra's Westkust Society">
+    <div class="community-inner">
+      <div class="community-head">
+        <h2>Ikuti &amp; Bergabung Bersama SWS</h2>
+        <p>
+          Sejarah tidak berhenti di halaman website. Ikuti publikasi, temukan
+          visual dan sumber sejarah, serta bergabung dalam percakapan komunitas
+          Sumatra's Westkust Society.
+        </p>
+      </div>
+
+      <div class="social-grid">
+        <a class="social-card"
+           href="https://www.facebook.com/share/16DSjxMWLio/?mibextid=wwXIfr"
+           target="_blank" rel="noopener noreferrer"
+           aria-label="Facebook Sumatra's Westkust Society">
+          <div class="social-icon">f</div>
+          <div>
+            <strong>Facebook</strong>
+            <span>Artikel, diskusi &amp; kabar komunitas</span>
+          </div>
+        </a>
+
+        <a class="social-card"
+           href="https://www.instagram.com/sumatraswestkustsociety?stkn=MWxlMDNiZjZyemEwZA%3D%3D&amp;utm_source=qr"
+           target="_blank" rel="noopener noreferrer"
+           aria-label="Instagram Sumatra's Westkust Society">
+          <div class="social-icon">◎</div>
+          <div>
+            <strong>Instagram</strong>
+            <span>Peta, arsip &amp; visual sejarah</span>
+          </div>
+        </a>
+
+        <a class="social-card"
+           href="https://chat.whatsapp.com/IaDVJWPxBLzGtx4tVL1rof?mode=gi_t"
+           target="_blank" rel="noopener noreferrer"
+           aria-label="WhatsApp Group Sumatra's Westkust Society">
+          <div class="social-icon">WA</div>
+          <div>
+            <strong>WhatsApp Group</strong>
+            <span>Bergabung dalam komunitas kajian SWS</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <footer>
   <div class="footer-inner">
     <span>Sumatra's Westkust Society</span>
     <span>Komunitas Kajian Sejarah Pantai Barat Sumatra</span>
+    <div class="footer-social">
+      <a href="https://www.facebook.com/share/16DSjxMWLio/?mibextid=wwXIfr"
+         target="_blank" rel="noopener noreferrer">Facebook</a>
+      <a href="https://www.instagram.com/sumatraswestkustsociety?stkn=MWxlMDNiZjZyemEwZA%3D%3D&amp;utm_source=qr"
+         target="_blank" rel="noopener noreferrer">Instagram</a>
+      <a href="https://chat.whatsapp.com/IaDVJWPxBLzGtx4tVL1rof?mode=gi_t"
+         target="_blank" rel="noopener noreferrer">WhatsApp</a>
+    </div>
   </div>
 </footer>
 
