@@ -51,6 +51,115 @@ main{max-width:var(--max);margin:0 auto;padding:52px 18px 80px}
 .hero .hero-subtitle{font-size:28px;line-height:1.3;color:#fff8e9;max-width:620px;margin:0 0 25px}
 .hero p{font-size:19px;line-height:1.65;color:#eee7d8;max-width:650px;margin:0}
 
+
+.search-box{
+  margin-top:42px;
+  padding:24px;
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:16px;
+}
+.search-label{
+  display:block;
+  font-family:Arial,Helvetica,sans-serif;
+  font-weight:800;
+  font-size:15px;
+  margin-bottom:10px;
+}
+.search-row{
+  display:flex;
+  gap:10px;
+}
+.search-input{
+  flex:1;
+  min-width:0;
+  border:1px solid var(--line);
+  background:#fff;
+  color:var(--ink);
+  border-radius:999px;
+  padding:14px 18px;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:15px;
+  outline:none;
+}
+.search-input:focus{
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(167,71,34,.10);
+}
+.search-btn{
+  border:0;
+  background:var(--navy);
+  color:#fff;
+  border-radius:999px;
+  padding:0 22px;
+  font-family:Arial,Helvetica,sans-serif;
+  font-weight:800;
+  cursor:pointer;
+}
+.search-btn:hover{background:var(--navy2)}
+.search-hint{
+  margin:9px 0 0;
+  color:var(--muted);
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:13px;
+}
+.search-status{
+  margin-top:18px;
+  color:var(--muted);
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:14px;
+}
+.search-results{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+  margin-top:18px;
+}
+.search-result{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:14px;
+  overflow:hidden;
+}
+.search-result a{
+  color:inherit;
+  text-decoration:none;
+  display:block;
+}
+.search-result img{
+  width:100%;
+  height:150px;
+  object-fit:cover;
+  display:block;
+}
+.search-result-body{padding:17px}
+.search-result h3{
+  font-size:21px;
+  line-height:1.15;
+  margin:7px 0 8px;
+}
+.search-result .excerpt{
+  font-size:14px;
+  line-height:1.45;
+}
+.search-empty{
+  grid-column:1/-1;
+  padding:18px;
+  border:1px dashed var(--line);
+  border-radius:12px;
+  color:var(--muted);
+  font-family:Arial,Helvetica,sans-serif;
+}
+@media(max-width:850px){
+  .search-results{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+  .search-box{margin-top:34px;padding:20px}
+  .search-row{flex-direction:column}
+  .search-btn{height:46px}
+  .search-results{grid-template-columns:1fr}
+}
+
 .section{margin-top:68px}
 .section-head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:22px}
 .section-head h2{font-size:38px;line-height:1.1;margin:0}
@@ -218,6 +327,24 @@ footer{background:var(--navy);color:#cbd2d7;padding:26px 18px 35px;font-family:A
   </section>
 
 <main>
+
+  <section class="search-box" aria-label="Cari artikel SWS">
+    <label class="search-label" for="search-input">Cari artikel SWS</label>
+    <div class="search-row">
+      <input
+        id="search-input"
+        class="search-input"
+        type="search"
+        placeholder="Contoh: Batahan, VOC, Barus, peta..."
+        autocomplete="off"
+        aria-label="Kata kunci pencarian artikel">
+      <button id="search-btn" class="search-btn" type="button">Cari</button>
+    </div>
+    <p class="search-hint">Cari berdasarkan judul, ringkasan, kategori, atau penulis.</p>
+    <div id="search-status" class="search-status" aria-live="polite"></div>
+    <div id="search-results" class="search-results"></div>
+  </section>
+
   
 
   <section class="section">
@@ -327,6 +454,10 @@ footer{background:var(--navy);color:#cbd2d7;padding:26px 18px 35px;font-family:A
   const latestEl = document.getElementById('latest');
   const moreWrap = document.getElementById('more-wrap');
   const moreBtn = document.getElementById('more-btn');
+  const searchInput = document.getElementById('search-input');
+  const searchBtn = document.getElementById('search-btn');
+  const searchStatus = document.getElementById('search-status');
+  const searchResults = document.getElementById('search-results');
 
   let latestOffset = 0;
   const pageSize = 9;
@@ -410,6 +541,68 @@ footer{background:var(--navy);color:#cbd2d7;padding:26px 18px 35px;font-family:A
     </article>`;
   }
 
+
+  function searchCard(a){
+    return `<article class="search-result">
+      <a href="article.html?slug=${encodeURIComponent(a.slug)}">
+        ${image(a.cover_image,a.title)}
+        <div class="search-result-body">
+          <div class="category">${esc(a.category || 'Artikel')}</div>
+          <h3>${esc(a.title)}</h3>
+          ${a.excerpt ? `<div class="excerpt">${esc(a.excerpt)}</div>` : ''}
+          <div class="meta">${meta(a)}</div>
+        </div>
+      </a>
+    </article>`;
+  }
+
+  async function searchArticles(){
+    const q = searchInput.value.trim();
+    searchResults.innerHTML = '';
+
+    if(q.length < 2){
+      searchStatus.textContent = q
+        ? 'Masukkan minimal 2 karakter untuk mencari.'
+        : '';
+      return;
+    }
+
+    searchStatus.textContent = 'Mencari artikel…';
+    searchBtn.disabled = true;
+
+    try{
+      const term = encodeURIComponent('*' + q + '*');
+      const or = encodeURIComponent(
+        `title.ilike.${term},excerpt.ilike.${term},category.ilike.${term},author.ilike.${term}`
+      );
+
+      const data = await api(
+        '/rest/v1/articles?select=id,title,slug,excerpt,category,author,cover_image,published_at,status'
+        +'&status=eq.published'
+        +'&or='+or
+        +'&order=published_at.desc.nullslast,created_at.desc'
+        +'&limit=12'
+      );
+
+      if(!data.length){
+        searchStatus.textContent = `Tidak ditemukan artikel untuk “${q}”.`;
+        searchResults.innerHTML =
+          '<div class="search-empty">Coba kata kunci lain, misalnya <strong>Batahan</strong>, <strong>VOC</strong>, <strong>Barus</strong>, atau <strong>peta</strong>.</div>';
+        return;
+      }
+
+      searchStatus.textContent =
+        `${data.length} artikel ditemukan untuk “${q}”.`;
+      searchResults.innerHTML = data.map(searchCard).join('');
+    }catch(err){
+      console.error(err);
+      searchStatus.innerHTML =
+        'Pencarian belum dapat dilakukan. <strong>'+esc(err.message || 'Terjadi kesalahan.')+'</strong>';
+    }finally{
+      searchBtn.disabled = false;
+    }
+  }
+
   async function loadFeatured(){
     try{
       const data = await api(
@@ -465,6 +658,16 @@ footer{background:var(--navy);color:#cbd2d7;padding:26px 18px 35px;font-family:A
   }
 
   moreBtn.addEventListener('click',()=>loadLatest(false));
+  searchBtn.addEventListener('click', searchArticles);
+  searchInput.addEventListener('keydown', e => {
+    if(e.key === 'Enter') searchArticles();
+  });
+  searchInput.addEventListener('input', () => {
+    if(!searchInput.value.trim()){
+      searchStatus.textContent = '';
+      searchResults.innerHTML = '';
+    }
+  });
   Promise.all([loadFeatured(),loadLatest(true)]);
 })();
 </script>
